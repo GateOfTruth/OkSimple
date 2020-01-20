@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.alen.oksimpleutil">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".MultipleDownloadActivity"/>
+        <activity android:name=".BrotliActivity" />
+        <activity android:name=".GlideTestActivity" />
+        <activity android:name=".PostFormActivity" />
+        <activity android:name=".UploadFileActivity" />
+        <activity android:name=".BitmapActivity" />
+        <activity android:name=".PostParamsActivity" />
+        <activity android:name=".PostJsonActivity" />
+        <activity android:name=".GetActivity" />
+        <activity android:name=".DownloadActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

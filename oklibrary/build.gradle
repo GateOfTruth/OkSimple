@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.novoda.bintray-release'
+//gradle clean build bintrayUpload -PbintrayUser=AlenXiao -PbintrayKey= -PdryRun=false
+publish {
+    def groupProjectID = 'com.alen.simpleutil'
+    def artifactProjectID = 'OkSimple'
+    def publishVersionID = '1.2.4'
+    userOrg = 'gateoftruth'
+    repoName = 'public'
+    groupId = groupProjectID
+    artifactId = artifactProjectID
+    publishVersion = publishVersionID
+    desc = 'simple okhttp util base on okhttp 4.x'
+    website = 'https://github.com/AllenXiao1994/OkSimple'
+}
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 13
+        versionName "1.2.4"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api 'com.squareup.okhttp3:okhttp:4.3.1'
+
+}
+
+
+
+

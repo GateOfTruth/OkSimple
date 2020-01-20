@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+    <Button
+            android:id="@+id/btn_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download Sample"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+            android:id="@+id/btn_get"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GET Sample"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_download" />
+
+    <Button
+            android:id="@+id/btn_post_params"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post params Sample"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_get" />
+
+    <Button
+            android:id="@+id/btn_post_json"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post json Sample"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_post_params" />
+
+    <Button
+        android:id="@+id/btn_bitmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bitmap"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_post_json" />
+
+    <Button
+        android:id="@+id/btn_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="upload"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_bitmap" />
+
+    <Button
+        android:id="@+id/btn_post_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="postForm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_upload" />
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@+id/btn_post_form"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="glideTest"
+        android:id="@+id/btn_glide_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@+id/btn_glide_test"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="brotliTest"
+        android:id="@+id/btn_brotli_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@+id/btn_brotli_test"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="multipleDownload"
+        android:id="@+id/btn_multiple_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
