@@ -36,7 +36,7 @@ glide进度监听
 <br>
 
 ## 项目介绍
-基于okhttp的二次封装库。设计之初有参考[okgo](https://github.com/jeasonlzy/okhttp-OkGo)，但比okgo更加简单易用。源码量相对okgo也少很多，但okgo实现的功能，Oksimple也能实现。因为之前的服务器用不了了，所以sample里没法使用真实服务器地址，只能写一些伪代码，但大部分功能是经过测试的。Oksimple目前minsdkversion是21，这是因为okhttp 3.13以后的版本，对minsdkversion的版本要求都变成21了。原因的话，官方有给出解释，大意是说出于https安全方面的考虑，具体可以参考[这篇文章](https://medium.com/square-corner-blog/okhttp-3-13-requires-android-5-818bb78d07ce)。如果你还想兼容android 5.0以下的版本，可以使用okhttp的3.12.x版本。但oksimple目前是基于4.X开发，以后可能也会考虑切一个3.12.x的分支，目前暂不考虑。综上，觉得好用的话，给个star吧
+基于okhttp的二次封装库。设计之初有参考[okgo](https://github.com/jeasonlzy/okhttp-OkGo)，但比okgo更加简单易用。源码量相对okgo也少很多，但okgo实现的功能，Oksimple也能实现。因为之前的服务器用不了了，所以sample里没法使用真实服务器地址，只能写一些伪代码，但大部分功能是经过测试的。Oksimple目前minsdkversion是21，这是因为okhttp 3.13以后的版本，对minsdkversion的版本要求都变成21了。原因的话，官方有给出解释，大意是说出于https安全方面的考虑，具体可以参考[这篇文章](https://medium.com/square-corner-blog/okhttp-3-13-requires-android-5-818bb78d07ce)。如果你还想兼容android 5.0以下的版本，可以使用okhttp的3.12.x版本。但oksimple目前是基于4.X开发，以后可能也会考虑切一个3.12.x的分支，目前暂不考虑。综上，觉得好用的话，给个star吧，也欢迎提issue，pr或者其他建议
 
 
 ### 接入方法
