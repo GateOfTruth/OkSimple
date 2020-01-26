@@ -58,7 +58,6 @@ implementation 'com.alen.simpleutil:OkSimple:1.2.4'
 ```
 ##### 或者你也可以fork一下，自己编译，oksimple只依赖了okhttp，没有其他依赖，编译出来的aar包也只有30几KB，同时，Oksimple采用api引入okhttp，所以你引入了oksimple的话，就不用重新引入okhttp了。
 
-
 ### 关于demo
 所有get，post，postjson，文件上传下载等方法，都是经过测试可行的。但有些方法，不方便写测试用例，便写的随便了些，所以demo中的很多测试类是无法直接运行的，请结合自身项目进行测试。使用过程中有问题的可以先参考demo里的写法，或者提issue给我
 
@@ -472,9 +471,6 @@ class GlideTestActivity : AppCompatActivity() {
 。详细的代码都在demo里，我在这里说一下实现glide进度监听的原理。要实现glide进度监听，首先就是要在AppGlideModule里调用Registry.replace，把glide原来使用的httpurlconnection替换为okhttp，在替换的时候，需要传入一个callback统一接收所有url的回调，这里我继承我的GlideCallBack，在回调的时候通过url进行区分。剩下的就很简单了，每次glide 加载前，传入一个url和listener到MyGlideCallBack中，这样，就完成了glide的进度监听。至于具体使用过程中，如何封装，我的demo也仅供参考。
 
 
-
-
-
-
-
+### 联系方式
+QQ：1572777804（注明来自github）
 
