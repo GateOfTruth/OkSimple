@@ -235,7 +235,7 @@ abstract class GsonCallBack<E> :DataCallBack<E>() {
 
 重写的意义在于把服务器端返回的json数据，转化为泛型定义的实体类，这里你可以使用gson，fastjson。也可以不像我一样使用getGenericSuperclass方法，而改为直接传入一个class类，都是可以的，看自己的喜好。
 
-以上面的GsonCallBack为例子，实际使用的话，get请求的kotlin版本可以这么写：（post和postjson请求同理，就不多介绍，具体可以参考demo）
+以上面的GsonCallBack为例子，实际使用的话，get请求的kotlin版本参照下面的代码，而[post请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostParamsActivity.kt)，[postJson](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostJsonActivity.kt)，[表单提交](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostFormActivity.kt)，可以点击链接查看
 ```kotlin
  OkSimple.get(url).apply {
             tag=xxx
