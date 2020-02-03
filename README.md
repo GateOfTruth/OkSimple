@@ -120,7 +120,7 @@ OkSimple.preventContinuousRequests=true//默认为true,当为false时，则不�
 ```
 当开关开启的时候，是可以有效防止诸如用户狂点按钮，导致短时间发送多个请求的情况发生的。<br/>
 注意事项：
-1. 1.2.3以前的版本，是根据url来进行判断的，这样的话，假如同时进行多个Post请求，url相同但参数不同，也会被拦截。所以在1.2.3版本改为使用tag进行判断。可以考虑给url相同，参数不同，但又需要同时请求的post请求设定不同的tag
+1. 1.2.3以前的版本，是根据url来进行判断的，这样的话，假如同时进行多个Post请求，url相同但参数不同，也会被拦截。所以在1.2.3版本改为使用tag进行判断。可以考虑给url相同，参数不同，但又需要同时请求的post请求设定不同的tag(tag有默认值，默认值是url)
 2. 是否有正在进行中的请求是根据tag判断并且全局单例通过ConcurrentHashMap进行管理。虽然会在onFailure和onResponse中进行重置，但在实际使用中有这样一种情况：activity a 里有一个post请求设置了tag，然后有人比较懒，把activity a里的这个post请求整体复制到activity b里，只改了参数，没有改url和tag，这个时候就会有个问题，当我在activity a 里的那个post请求还没有请求完成的时候，跳转到activity b，会发现activity b 里的post请求没有执行。原因就在于tag是相同的。所以建议这种情况下，应该设置不同的tag。这里我放上一部分精简过后的源码方便大家理解。
 ``` kotlin 
        val status = OkSimple.statusUrlMap[tag] ?: false
