@@ -43,6 +43,9 @@ glide进度监听
 ## minSdkVersion
 Oksimple目前minsdkversion是21，一些用我这个lib朋友希望我能支持到19，我的想法是oksimple没有支持19的打算。首先okhttp 3.13以后的版本，对minsdkversion的版本要求都变成21了。原因的话，官方有给出解释，大意是说出于https安全方面的考虑，具体可以参考[这篇文章](https://medium.com/square-corner-blog/okhttp-3-13-requires-android-5-818bb78d07ce)。如果你还想兼容android 5.0以下的版本，可以使用okhttp的3.12.x版本。但oksimple目前是基于4.X开发，没有针对 okhttp 3.12版本重写的打算。这里说一点题外话，其实像微信的最新版，minsdkversion都变成21了。支持到19，我个人感觉没什么必要。
 
+## demo
+github上的demo演示里，用的都是第三方的地址，或者就是一些伪代码。这是因为之前写这个库的时候，用的是一个朋友的服务器做测试。后来他的服务器到期了，也就换成了第三方和一些伪代码。但功能的话，都是经过实际使用测试的。如果确实有问题的话，欢迎提issue。
+
 
 ### 接入方法
 在根节点的build.gradle
