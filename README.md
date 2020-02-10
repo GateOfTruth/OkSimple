@@ -1,4 +1,4 @@
-### OKsimple：一个对okhttp进行二次封装的网络请求库，相比retrofit更简单易用，扩展性强，基于okhttp4.X版本和kotlin。目前的大部分网络请求框架都是用java写的，而且对okhttp的支持也只支持到okhttp3.x。但oksimple基于okhttp4.X和kotlin。将来也会持续更新okhttp的版本，在保证兼容性的前提下和官方保持同步。目前更新到okttp4.3.1。
+### OKsimple：一个对okhttp进行二次封装的网络请求库，相比retrofit更简单易用，扩展性强，基于okhttp4.X版本和kotlin。
 ###### 目前实现的功能
 - get，post，postjson，表单提交等常规请求
 - 多文件下载，支持进度监听，支持断点续传
@@ -11,6 +11,7 @@
 - 在没有网络的情况下，可以添加force cache
 - 基于kotlin但也对java做了支持
 - 同步okhttp最新版本，支持brotli compression
+
 <br>
 
 断点续传
@@ -35,8 +36,12 @@ glide进度监听
 
 <br>
 
+
 ## 项目介绍
-基于okhttp的二次封装库。设计之初有参考[okgo](https://github.com/jeasonlzy/okhttp-OkGo)，但比okgo更加简单易用。源码量相对okgo也少很多，但okgo实现的功能，Oksimple也能实现。因为之前的服务器用不了了，所以sample里没法使用真实服务器地址，只能写一些伪代码，但大部分功能是经过测试的。Oksimple目前minsdkversion是21，这是因为okhttp 3.13以后的版本，对minsdkversion的版本要求都变成21了。原因的话，官方有给出解释，大意是说出于https安全方面的考虑，具体可以参考[这篇文章](https://medium.com/square-corner-blog/okhttp-3-13-requires-android-5-818bb78d07ce)。如果你还想兼容android 5.0以下的版本，可以使用okhttp的3.12.x版本。但oksimple目前是基于4.X开发，以后可能也会考虑切一个3.12.x的分支，目前暂不考虑。综上，觉得好用的话，给个star吧，也欢迎提issue，pr或者其他建议
+基于okhttp的二次封装库。基于okhttp4.X和kotlin，目前更新到okttp4.3.1。设计之初有参考[okgo](https://github.com/jeasonlzy/okhttp-OkGo)，但和okgo对比的话，不管是设计思路还是最终实现的效果，都有很多不同的地方。觉得好用的话，给个star吧，也欢迎提issue，pr或者其他建议。
+
+## minSdkVersion
+Oksimple目前minsdkversion是21，一些用我这个lib朋友希望我能支持到19，我的想法是oksimple没有支持19的打算。首先okhttp 3.13以后的版本，对minsdkversion的版本要求都变成21了。原因的话，官方有给出解释，大意是说出于https安全方面的考虑，具体可以参考[这篇文章](https://medium.com/square-corner-blog/okhttp-3-13-requires-android-5-818bb78d07ce)。如果你还想兼容android 5.0以下的版本，可以使用okhttp的3.12.x版本。但oksimple目前是基于4.X开发，没有针对 okhttp 3.12版本重写的打算。这里说一点题外话，其实像微信的最新版，minsdkversion都变成21了。支持到19，我个人感觉没什么必要。
 
 
 ### 接入方法
