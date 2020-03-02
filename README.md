@@ -239,7 +239,7 @@ abstract class GsonCallBack<E> :DataCallBack<E>() {
 
 重写的意义在于把服务器端返回的json数据，转化为泛型定义的实体类，这里你可以使用gson，fastjson。也可以不像我一样使用getGenericSuperclass方法，而改为直接传入一个class类，都是可以的，看自己的喜好。
 
-以上面的GsonCallBack为例子，实际使用的话，get请求的kotlin版本参照下面的代码或者demo里的[get请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/GetActivity.kt)，而[post请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostParamsActivity.kt)，[postJson](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostJsonActivity.kt)，[表单提交](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostFormActivity.kt)，可以点击链接查看
+以上面的GsonCallBack为例子，实际使用的话，get请求的kotlin版本参照下面的代码或者demo里的[get请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/GetActivity.kt)，而[post请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostParamsActivity.kt)，[postJson](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostJsonActivity.kt)，可以点击链接查看
 ```kotlin
  OkSimple.get(url).apply {
             tag=xxx
@@ -285,7 +285,8 @@ OkSimple.INSTANCE.get(url).setTheTag(xxx).addHeader(key,value).setTheRequestCach
 ##### 怎么写的话看个人喜好，这里说一下几个链式调用的方法，addHeader我想就不用多说了，requestCacheControl是okhttp.Request类自带的一个方法，用于支持缓存控制，具体可以参考okhttp的官方文档，而okhttp的全局缓存策略的话，可以在初始化的时候通过自定义okhttpclient传入。tag的话，默认是url，用于支持取消请求。params的话，默认会拼接在url之后，post请求也可以调用。OkSimple里的所有请求，在发起的时候，都可以带上这几个参数，后面的请求，我就不再重复介绍了。
 
 ##### 4.DataCallBack文件上传
-通常文件上传之后，服务器端也会返回json，告诉你上传成功还是失败。所以这里依然是使用DataCallBack。为了方便介绍，我这里还是以GsonCallBack为例子。
+这里的文件上传分两种情况，一种是表单提交，同时上传文件和参数。一种是就是简单的发送一个post请求把文件上传到服务器。可以分别参考demo里的[表单提交](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostFormActivity.kt)或者[post文件上传](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/UploadFileActivity.kt)。这里我在简单说下。
+表单提交之后，服务器端也会返回json，告诉你上传成功还是失败。所以这里依然是使用DataCallBack。为了方便介绍，我这里还是以GsonCallBack为例子。
 ```kotlin
 OkSimple.postForm(url).addFormPart(key,file,mediaTypeString).addFormPart(key,value).execute(object :GsonCallBack<T>(){
             override fun getData(
@@ -312,7 +313,7 @@ OkSimple.postForm(url).addFormPart(key,file,mediaTypeString).addFormPart(key,val
         })
 ```
 
-通常情况下来说，表单提交的文件上传这样就可以了。Oksimple在使用postForm进行文件上传的时候，是以表单形式提交，同时也支持一个key一个file和一个key多个file。这里先说一下mediaTypeString这个参数，这个参数是string类型，不是必传的，是可选参数，默认值是application/octet-stream，但比如上传图片的时候，有的服务器不认application/octet-stream，只认"image/jpg"，那么这个时候,那么你就把服务器需要的mediatype传过去就行了。然后是fun uploadProgress(fileName: String, total: Long, current: Long)这个方法，因为我重写了RequestBody，所以uploadProgress默认会在子线程被okhttp回调，并且这个方法如果你点进去，看到父类实现的话，是这样实现的
+通常情况下来说，表单提交的文件上传这样就可以了。Oksimple同时也支持一个key一个file和一个key多个file。这里先说一下mediaTypeString这个参数，这个参数是string类型，不是必传的，是可选参数，默认值是application/octet-stream，但比如上传图片的时候，有的服务器不认application/octet-stream，只认"image/jpg"，那么这个时候,那么你就把服务器需要的mediatype传过去就行了。然后是fun uploadProgress(fileName: String, total: Long, current: Long)这个方法，因为我重写了RequestBody，所以uploadProgress默认会在子线程被okhttp回调，并且这个方法如果你点进去，看到父类实现的话，是这样实现的
 ```kotlin
  fun uploadProgress(fileName: String, total: Long, current: Long) {
         OkSimple.mainHandler.post {
@@ -320,7 +321,10 @@ OkSimple.postForm(url).addFormPart(key,file,mediaTypeString).addFormPart(key,val
         }
     }
 ```
-所以，如果你想在自己的handler处理子线程和主线程的通讯，那么你可以把super.uploadProgress(fileName, total, current)这句删掉，同时uploadProgressOnMainThread也就不会被回调了。还有就是有的服务器上传单个文件不是使用表单形式，是使用post形式，没有key值，那么你可以这么写
+所以，如果你想在自己的handler处理子线程和主线程的通讯，那么你可以把super.uploadProgress(fileName, total, current)这句删掉，同时uploadProgressOnMainThread也就不会被回调了。
+
+
+然后是使用post形式的文件上传，没有key值，那么你可以参考下面的代码
 ```kotlin
 OkSimple.uploadFile(url,file,mediaTypeString).execute(object :GsonCallBack<T>(){
             override fun getData(
@@ -347,7 +351,6 @@ OkSimple.uploadFile(url,file,mediaTypeString).execute(object :GsonCallBack<T>(){
         })
 
 ```
-
 
 ##### 5.FileResultCallBack文件下载
 ```kotlin
@@ -379,7 +382,7 @@ OkSimple.uploadFile(url,file,mediaTypeString).execute(object :GsonCallBack<T>(){
 有用我这个框架的一些朋友让我像别的下载框架一样，加上多线程分段下载。我感到很奇怪，问他用这个功能干嘛。他说他的项目里，需要从服务器下载一些资源文件或者安装包，分段下载可能会快一些。我说如果你用Oksimple只是从你服务器上下载东西，那多线程分段下载其实完全没有必要。因为你服务器的带宽是固定的，在单线程情况下，假设100M带宽，10个人下，每个人分到1M。假设现在每个人都开了两个线程下载，那么100M带宽，假设依然保证每个人1M的下载速率，那么只够分5个人。你是愿意10个人，每个人都慢一点，还是愿意只有五个人能下，每个人能快一点？回到多线程，我认为移动端进行自己服务器的多线程下载，很多时候是没有必要的。多线程分段下载适合迅雷这样的，通过稳定的宽带从非自己服务器下载。但Oksimple本来就是基于android这样的移动平台，不适合做成迅雷这样的。所以我并有在Oksimple里加入多线程分段下载。
 
 ##### 8.GlideCallBack进行glide图片加载进度监听
-如果你看源代码的话，你会发现GlideCallBack是一个空方法。这是因为Oksimple本质是一个网络请求的框架， 不会考虑引入glide等其他库，所以我提供的只是接入glide的能力。因此我把它放在了demo里而不是lib里，如果你想实现demo里那样的效果的话，我会提供一个很简单的思路。当然你也可以直接去看源码。
+入口类在[这里](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/GlideTestActivity.kt)。如果你看源代码的话，你会发现GlideCallBack是一个空方法。这是因为Oksimple本质是一个网络请求的框架， 不会考虑引入glide等其他库，所以我只是返回了一个重写了responsebody的okhttpclient。因为实现okhttp接入glide获取图片加载进度的思路其实很简单。
 首先你需要引入glide相关的库
 ```kotlin
  implementation 'com.github.bumptech.glide:glide:4.9.0'
