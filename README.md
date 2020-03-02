@@ -1,4 +1,4 @@
-### OKsimple：一个对okhttp进行二次封装的网络请求库，相比retrofit更简单易用，扩展性强，基于okhttp4.X版本和kotlin。目前的大部分网络请求框架都是用java写的，而且对okhttp的支持也只支持到okhttp3.x。但oksimple基于okhttp4.X和kotlin。将来也会持续更新okhttp的版本，在保证兼容性的前提下和官方保持同步。目前更新到okttp4.3.1。
+### OKsimple：一个对okhttp进行二次封装的网络请求库，简单易用，扩展性强，基于okhttp4.X版本和kotlin。
 ###### 目前实现的功能
 - get，post，postjson，表单提交等常规请求
 - 多文件下载，支持进度监听，支持断点续传
@@ -11,6 +11,7 @@
 - 在没有网络的情况下，可以添加force cache
 - 基于kotlin但也对java做了支持
 - 同步okhttp最新版本，支持brotli compression
+
 <br>
 
 断点续传
@@ -35,8 +36,15 @@ glide进度监听
 
 <br>
 
+
 ## 项目介绍
-基于okhttp的二次封装库。设计之初有参考[okgo](https://github.com/jeasonlzy/okhttp-OkGo)，但比okgo更加简单易用。源码量相对okgo也少很多，但okgo实现的功能，Oksimple也能实现。因为之前的服务器用不了了，所以sample里没法使用真实服务器地址，只能写一些伪代码，但大部分功能是经过测试的。Oksimple目前minsdkversion是21，这是因为okhttp 3.13以后的版本，对minsdkversion的版本要求都变成21了。原因的话，官方有给出解释，大意是说出于https安全方面的考虑，具体可以参考[这篇文章](https://medium.com/square-corner-blog/okhttp-3-13-requires-android-5-818bb78d07ce)。如果你还想兼容android 5.0以下的版本，可以使用okhttp的3.12.x版本。但oksimple目前是基于4.X开发，以后可能也会考虑切一个3.12.x的分支，目前暂不考虑。综上，觉得好用的话，给个star吧，也欢迎提issue，pr或者其他建议
+基于okhttp的二次封装库。基于okhttp4.X和kotlin，目前更新到okttp4.3.1。设计之初有参考[okgo](https://github.com/jeasonlzy/okhttp-OkGo)，最后都是采用链式调用加回调的方式。但和okgo对比的话，不管是代码还是思路，都是完全不同的。觉得好用的话，给个star吧，也欢迎提issue，pr或者其他建议。
+
+## minSdkVersion
+Oksimple目前minsdkversion是21，一些用我这个lib朋友希望我能支持到19，我的想法是oksimple没有支持19的打算。首先okhttp 3.13以后的版本，对minsdkversion的版本要求都变成21了。原因的话，官方有给出解释，大意是说出于https安全方面的考虑，具体可以参考[这篇文章](https://medium.com/square-corner-blog/okhttp-3-13-requires-android-5-818bb78d07ce)。如果你还想兼容android 5.0以下的版本，可以使用okhttp的3.12.x版本。但oksimple目前是基于4.X开发，没有针对 okhttp 3.12版本重写的打算。这里说一点题外话，其实像微信的最新版，minsdkversion都变成21了。支持到19，中间的20是kitkat wear，是针对智能手表一类的设备的。如果你做的是针对手机的app，那kitkat wear其实和你没什么关系。所以21到19，看似多支持了2个版本，其实只是多支持了一个版本。为了19这个已经落后很多年的版本，有些时候你需要多写很多代码和适配，我个人感觉是没有必要的。
+
+## demo
+github上的demo演示里，用的都是第三方的地址。但功能的话，都是经过实际使用测试的。如果确实有问题的话，欢迎提issue。
 
 
 ### 接入方法
@@ -57,10 +65,6 @@ allprojects {
 implementation 'com.alen.simpleutil:OkSimple:1.2.4'
 ```
 ##### 或者你也可以fork一下，自己编译，oksimple只依赖了okhttp，没有其他依赖，编译出来的aar包也只有30几KB，同时，Oksimple采用api引入okhttp，所以你引入了oksimple的话，就不用重新引入okhttp了。
-
-### 关于demo
-所有get，post，postjson，文件上传下载等方法，都是经过测试可行的。但有些方法，不方便写测试用例，便写的随便了些，所以demo中的很多测试类是无法直接运行的，请结合自身项目进行测试。使用过程中有问题的可以先参考demo里的写法，或者提issue给我
-
 
 ### 使用方法
 ##### 1.全局初始化
@@ -120,7 +124,7 @@ OkSimple.preventContinuousRequests=true//默认为true,当为false时，则不�
 ```
 当开关开启的时候，是可以有效防止诸如用户狂点按钮，导致短时间发送多个请求的情况发生的。<br/>
 注意事项：
-1. 1.2.3以前的版本，是根据url来进行判断的，这样的话，假如同时进行多个Post请求，url相同但参数不同，也会被拦截。所以在1.2.3版本改为使用tag进行判断。可以考虑给url相同，参数不同，但又需要同时请求的post请求设定不同的tag
+1. 1.2.3以前的版本，是根据url来进行判断的，这样的话，假如同时进行多个Post请求，url相同但参数不同，也会被拦截。所以在1.2.3版本改为使用tag进行判断。可以考虑给url相同，参数不同，但又需要同时请求的post请求设定不同的tag(tag有默认值，默认值是url)
 2. 是否有正在进行中的请求是根据tag判断并且全局单例通过ConcurrentHashMap进行管理。虽然会在onFailure和onResponse中进行重置，但在实际使用中有这样一种情况：activity a 里有一个post请求设置了tag，然后有人比较懒，把activity a里的这个post请求整体复制到activity b里，只改了参数，没有改url和tag，这个时候就会有个问题，当我在activity a 里的那个post请求还没有请求完成的时候，跳转到activity b，会发现activity b 里的post请求没有执行。原因就在于tag是相同的。所以建议这种情况下，应该设置不同的tag。这里我放上一部分精简过后的源码方便大家理解。
 ``` kotlin 
        val status = OkSimple.statusUrlMap[tag] ?: false
@@ -235,7 +239,7 @@ abstract class GsonCallBack<E> :DataCallBack<E>() {
 
 重写的意义在于把服务器端返回的json数据，转化为泛型定义的实体类，这里你可以使用gson，fastjson。也可以不像我一样使用getGenericSuperclass方法，而改为直接传入一个class类，都是可以的，看自己的喜好。
 
-以上面的GsonCallBack为例子，实际使用的话，get请求的kotlin版本可以这么写：（post和postjson请求同理，就不多介绍，具体可以参考demo）
+以上面的GsonCallBack为例子，实际使用的话，get请求的kotlin版本参照下面的代码或者demo里的[get请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/GetActivity.kt)，而[post请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostParamsActivity.kt)，[postJson](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostJsonActivity.kt)，可以点击链接查看
 ```kotlin
  OkSimple.get(url).apply {
             tag=xxx
@@ -281,7 +285,8 @@ OkSimple.INSTANCE.get(url).setTheTag(xxx).addHeader(key,value).setTheRequestCach
 ##### 怎么写的话看个人喜好，这里说一下几个链式调用的方法，addHeader我想就不用多说了，requestCacheControl是okhttp.Request类自带的一个方法，用于支持缓存控制，具体可以参考okhttp的官方文档，而okhttp的全局缓存策略的话，可以在初始化的时候通过自定义okhttpclient传入。tag的话，默认是url，用于支持取消请求。params的话，默认会拼接在url之后，post请求也可以调用。OkSimple里的所有请求，在发起的时候，都可以带上这几个参数，后面的请求，我就不再重复介绍了。
 
 ##### 4.DataCallBack文件上传
-通常文件上传之后，服务器端也会返回json，告诉你上传成功还是失败。所以这里依然是使用DataCallBack。为了方便介绍，我这里还是以GsonCallBack为例子。
+这里的文件上传分两种情况，一种是表单提交，同时上传文件和参数。一种是就是简单的发送一个post请求把文件上传到服务器。可以分别参考demo里的[表单提交](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostFormActivity.kt)或者[post文件上传](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/UploadFileActivity.kt)。这里我在简单说下。
+表单提交之后，服务器端也会返回json，告诉你上传成功还是失败。所以这里依然是使用DataCallBack。为了方便介绍，我这里还是以GsonCallBack为例子。
 ```kotlin
 OkSimple.postForm(url).addFormPart(key,file,mediaTypeString).addFormPart(key,value).execute(object :GsonCallBack<T>(){
             override fun getData(
@@ -308,7 +313,7 @@ OkSimple.postForm(url).addFormPart(key,file,mediaTypeString).addFormPart(key,val
         })
 ```
 
-通常情况下来说，表单提交的文件上传这样就可以了。Oksimple在使用postForm进行文件上传的时候，是以表单形式提交，同时也支持一个key一个file和一个key多个file。这里先说一下mediaTypeString这个参数，这个参数是string类型，不是必传的，是可选参数，默认值是application/octet-stream，但比如上传图片的时候，有的服务器不认application/octet-stream，只认"image/jpg"，那么这个时候,那么你就把服务器需要的mediatype传过去就行了。然后是fun uploadProgress(fileName: String, total: Long, current: Long)这个方法，因为我重写了RequestBody，所以uploadProgress默认会在子线程被okhttp回调，并且这个方法如果你点进去，看到父类实现的话，是这样实现的
+通常情况下来说，表单提交的文件上传这样就可以了。Oksimple同时也支持一个key一个file和一个key多个file。这里先说一下mediaTypeString这个参数，这个参数是string类型，不是必传的，是可选参数，默认值是application/octet-stream，但比如上传图片的时候，有的服务器不认application/octet-stream，只认"image/jpg"，那么这个时候,那么你就把服务器需要的mediatype传过去就行了。然后是fun uploadProgress(fileName: String, total: Long, current: Long)这个方法，因为我重写了RequestBody，所以uploadProgress默认会在子线程被okhttp回调，并且这个方法如果你点进去，看到父类实现的话，是这样实现的
 ```kotlin
  fun uploadProgress(fileName: String, total: Long, current: Long) {
         OkSimple.mainHandler.post {
@@ -316,7 +321,10 @@ OkSimple.postForm(url).addFormPart(key,file,mediaTypeString).addFormPart(key,val
         }
     }
 ```
-所以，如果你想在自己的handler处理子线程和主线程的通讯，那么你可以把super.uploadProgress(fileName, total, current)这句删掉，同时uploadProgressOnMainThread也就不会被回调了。还有就是有的服务器上传单个文件不是使用表单形式，是使用post形式，没有key值，那么你可以这么写
+所以，如果你想在自己的handler处理子线程和主线程的通讯，那么你可以把super.uploadProgress(fileName, total, current)这句删掉，同时uploadProgressOnMainThread也就不会被回调了。
+
+
+然后是使用post形式的文件上传，没有key值，那么你可以参考下面的代码
 ```kotlin
 OkSimple.uploadFile(url,file,mediaTypeString).execute(object :GsonCallBack<T>(){
             override fun getData(
@@ -365,7 +373,7 @@ OkSimple.uploadFile(url,file,mediaTypeString).execute(object :GsonCallBack<T>(){
 
         })
 ```
-通过如上代码，便可完成文件下载，下载完的文件，会在finish()方法里回调，finish是FileResultCallBack继承ResultCallBack后新增的方法，用于获取下载完成的文件。Oksimple默认支持断点续传，假如你的服务器不支持断点续传，也可照常下载。如果你不想断点续传，想重新下载，请在下载前把存在的文件删除。在okhttp的逻辑里，是没有断点续传的概念的，只有通过tag取消一个请求，然后再次请求的概念。oksimple默认给每一个请求一个和url一样的tag，也可以自定义tag，具体可以参考demo。downloadProgressOnMainThread和downloadProgress与之前文件上传的uploadProgressOnMainThread和uploadProgress同理。因为我重写了ResponseBody，所以okhttp默认会在子线程回调downloadProgress，如果你想自己控制主线程子线程的切换，同样可以删掉 super.downloadProgress(url, total, current)这句代码即可。
+通过如上代码，便可完成文件下载。下载完的文件，会在finish()方法里回调，finish是FileResultCallBack继承ResultCallBack后新增的方法，用于获取下载完成的文件。Oksimple默认支持断点续传，假如你的服务器不支持断点续传，也可照常下载。如果你不想断点续传，想重新下载，请在下载前把存在的文件删除。在okhttp的逻辑里，是没有断点续传的概念的，只有通过tag取消一个请求，然后再次请求的概念。oksimple默认给每一个请求一个和url一样的tag，也可以自定义tag，具体可以参考例子里的[文件下载](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/DownloadActivity.kt)。downloadProgressOnMainThread和downloadProgress与之前文件上传的uploadProgressOnMainThread和uploadProgress同理。因为我重写了ResponseBody，所以okhttp默认会在子线程回调downloadProgress，如果你想自己控制主线程子线程的切换，同样可以删掉 super.downloadProgress(url, total, current)这句代码即可。
 
 ##### 6.FileResultCallBack多文件下载
 多文件下载其实就是多次调用下载方法，但有些许不同，具体可以参考demo里的[MultipleDownloadActivity](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/MultipleDownloadActivity.kt)。demo里没做到诸如各大应用商店里那样的自动下载，但这确实是可以实现的，你可以考虑接入sqlite或者handler等来进行实现。我没有打算做一个专门的下载框架，因为就以往的开发过程中，对多文件下载的需求总是相当复杂的，要考虑的很多，诸如断网，进程杀死等等。很少有一个框架能满足各种UI和功能的需求。所以oksimple也只是提供了多文件下载的能力，具体实现需要自己编码处理。
@@ -374,7 +382,7 @@ OkSimple.uploadFile(url,file,mediaTypeString).execute(object :GsonCallBack<T>(){
 有用我这个框架的一些朋友让我像别的下载框架一样，加上多线程分段下载。我感到很奇怪，问他用这个功能干嘛。他说他的项目里，需要从服务器下载一些资源文件或者安装包，分段下载可能会快一些。我说如果你用Oksimple只是从你服务器上下载东西，那多线程分段下载其实完全没有必要。因为你服务器的带宽是固定的，在单线程情况下，假设100M带宽，10个人下，每个人分到1M。假设现在每个人都开了两个线程下载，那么100M带宽，假设依然保证每个人1M的下载速率，那么只够分5个人。你是愿意10个人，每个人都慢一点，还是愿意只有五个人能下，每个人能快一点？回到多线程，我认为移动端进行自己服务器的多线程下载，很多时候是没有必要的。多线程分段下载适合迅雷这样的，通过稳定的宽带从非自己服务器下载。但Oksimple本来就是基于android这样的移动平台，不适合做成迅雷这样的。所以我并有在Oksimple里加入多线程分段下载。
 
 ##### 8.GlideCallBack进行glide图片加载进度监听
-如果你看源代码的话，你会发现GlideCallBack是一个空方法。这是因为Oksimple本质是一个网络请求的框架， 不会考虑引入glide等其他库，所以我提供的只是接入glide的能力。因此我把它放在了demo里而不是lib里，如果你想实现demo里那样的效果的话，我会提供一个很简单的思路。当然你也可以直接去看源码。
+入口类在[这里](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/GlideTestActivity.kt)。如果你看源代码的话，你会发现GlideCallBack是一个空方法。这是因为Oksimple本质是一个网络请求的框架， 不会考虑引入glide等其他库，所以我只是返回了一个重写了responsebody的okhttpclient。因为实现okhttp接入glide获取图片加载进度的思路其实很简单。
 首先你需要引入glide相关的库
 ```kotlin
  implementation 'com.github.bumptech.glide:glide:4.9.0'
