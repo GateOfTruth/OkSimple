@@ -2,10 +2,9 @@ package com.alen.oksimpleutil
 
 import android.app.Application
 import com.alen.oklibrary.OkSimple
-import com.ihsanbal.logging.Level
-import com.ihsanbal.logging.LoggingInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
 class MyApplication: Application() {
@@ -15,8 +14,9 @@ class MyApplication: Application() {
         /*
         init your own okHttpClient if necessary
          */
-        val logger=LoggingInterceptor.Builder().loggable(true).setLevel(Level.BASIC).request("REQUEST").response("RESPONSE").build()
-        OkSimple.okHttpClient=OkHttpClient.Builder().addInterceptor(logger)
+        val loggingInterceptor=HttpLoggingInterceptor()
+        loggingInterceptor.level=HttpLoggingInterceptor.Level.BODY
+        OkSimple.okHttpClient=OkHttpClient.Builder().addNetworkInterceptor(loggingInterceptor)
             .connectTimeout(100,TimeUnit.SECONDS)
             .writeTimeout(100,TimeUnit.SECONDS)
             .readTimeout(100,TimeUnit.SECONDS)
