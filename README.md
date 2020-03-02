@@ -66,10 +66,6 @@ implementation 'com.alen.simpleutil:OkSimple:1.2.4'
 ```
 ##### 或者你也可以fork一下，自己编译，oksimple只依赖了okhttp，没有其他依赖，编译出来的aar包也只有30几KB，同时，Oksimple采用api引入okhttp，所以你引入了oksimple的话，就不用重新引入okhttp了。
 
-### 关于demo
-所有get，post，postjson，文件上传下载等方法，都是经过测试可行的。但有些方法，不方便写测试用例，便写的随便了些，所以demo中的很多测试类是无法直接运行的，请结合自身项目进行测试。使用过程中有问题的可以先参考demo里的写法，或者提issue给我
-
-
 ### 使用方法
 ##### 1.全局初始化
 oksimple 没有对okhttpclient进行任何的封装方法，基本上okhttpclient提供了接口的方法，我都没有进行二次封装，因为感觉没有必要，我只创建了一个默认的对象，就像这样
@@ -243,7 +239,7 @@ abstract class GsonCallBack<E> :DataCallBack<E>() {
 
 重写的意义在于把服务器端返回的json数据，转化为泛型定义的实体类，这里你可以使用gson，fastjson。也可以不像我一样使用getGenericSuperclass方法，而改为直接传入一个class类，都是可以的，看自己的喜好。
 
-以上面的GsonCallBack为例子，实际使用的话，get请求的kotlin版本参照下面的代码，而[post请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostParamsActivity.kt)，[postJson](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostJsonActivity.kt)，[表单提交](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostFormActivity.kt)，可以点击链接查看
+以上面的GsonCallBack为例子，实际使用的话，get请求的kotlin版本参照下面的代码或者demo里的[get请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/GetActivity.kt)，而[post请求](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostParamsActivity.kt)，[postJson](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostJsonActivity.kt)，[表单提交](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/PostFormActivity.kt)，可以点击链接查看
 ```kotlin
  OkSimple.get(url).apply {
             tag=xxx
@@ -352,6 +348,7 @@ OkSimple.uploadFile(url,file,mediaTypeString).execute(object :GsonCallBack<T>(){
 
 ```
 
+
 ##### 5.FileResultCallBack文件下载
 ```kotlin
  OkSimple.downloadFile(url,filename,filepath).execute(object :FileResultCallBack(){
@@ -373,7 +370,7 @@ OkSimple.uploadFile(url,file,mediaTypeString).execute(object :GsonCallBack<T>(){
 
         })
 ```
-通过如上代码，便可完成文件下载，下载完的文件，会在finish()方法里回调，finish是FileResultCallBack继承ResultCallBack后新增的方法，用于获取下载完成的文件。Oksimple默认支持断点续传，假如你的服务器不支持断点续传，也可照常下载。如果你不想断点续传，想重新下载，请在下载前把存在的文件删除。在okhttp的逻辑里，是没有断点续传的概念的，只有通过tag取消一个请求，然后再次请求的概念。oksimple默认给每一个请求一个和url一样的tag，也可以自定义tag，具体可以参考demo。downloadProgressOnMainThread和downloadProgress与之前文件上传的uploadProgressOnMainThread和uploadProgress同理。因为我重写了ResponseBody，所以okhttp默认会在子线程回调downloadProgress，如果你想自己控制主线程子线程的切换，同样可以删掉 super.downloadProgress(url, total, current)这句代码即可。
+通过如上代码，便可完成文件下载。下载完的文件，会在finish()方法里回调，finish是FileResultCallBack继承ResultCallBack后新增的方法，用于获取下载完成的文件。Oksimple默认支持断点续传，假如你的服务器不支持断点续传，也可照常下载。如果你不想断点续传，想重新下载，请在下载前把存在的文件删除。在okhttp的逻辑里，是没有断点续传的概念的，只有通过tag取消一个请求，然后再次请求的概念。oksimple默认给每一个请求一个和url一样的tag，也可以自定义tag，具体可以参考例子里的[文件下载](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/DownloadActivity.kt)。downloadProgressOnMainThread和downloadProgress与之前文件上传的uploadProgressOnMainThread和uploadProgress同理。因为我重写了ResponseBody，所以okhttp默认会在子线程回调downloadProgress，如果你想自己控制主线程子线程的切换，同样可以删掉 super.downloadProgress(url, total, current)这句代码即可。
 
 ##### 6.FileResultCallBack多文件下载
 多文件下载其实就是多次调用下载方法，但有些许不同，具体可以参考demo里的[MultipleDownloadActivity](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/java/com/alen/oksimpleutil/MultipleDownloadActivity.kt)。demo里没做到诸如各大应用商店里那样的自动下载，但这确实是可以实现的，你可以考虑接入sqlite或者handler等来进行实现。我没有打算做一个专门的下载框架，因为就以往的开发过程中，对多文件下载的需求总是相当复杂的，要考虑的很多，诸如断网，进程杀死等等。很少有一个框架能满足各种UI和功能的需求。所以oksimple也只是提供了多文件下载的能力，具体实现需要自己编码处理。
