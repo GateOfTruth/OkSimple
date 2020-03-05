@@ -478,6 +478,25 @@ class GlideTestActivity : AppCompatActivity() {
 [view_glide_progress](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/res/layout/view_glide_progress.xml)和[activity_glide_test](https://github.com/AllenXiao1994/OkSimple/blob/master/app/src/main/res/layout/activity_glide_test.xml)请点击查看
 。详细的代码都在demo里，我在这里说一下实现glide进度监听的原理。要实现glide进度监听，首先就是要在AppGlideModule里调用Registry.replace，把glide原来使用的httpurlconnection替换为okhttp，在替换的时候，需要传入一个callback统一接收所有url的回调，这里我继承我的GlideCallBack，在回调的时候通过url进行区分。剩下的就很简单了，每次glide 加载前，传入一个url和listener到MyGlideCallBack中，这样，就完成了glide的进度监听。至于具体使用过程中，如何封装，我的demo也仅供参考。
 
+License
+-------
+
+```
+Copyright 2019 AllenXiao1994, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
 
 ### 联系方式
 QQ：1572777804（注明来自github）
