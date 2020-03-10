@@ -1,4 +1,4 @@
-# OKsimple：一个对okhttp进行二次封装的网络请求库，简单易用，扩展性强，基于okhttp4.X版本和kotlin。
+# OKsimple：，简单易用，扩展性强，基于okhttp4.X版本和kotlin的网络请求框架。
 ### 目前实现的功能
 - get，post，postjson，表单提交等常规请求
 - 多文件下载，支持进度监听，支持断点续传
