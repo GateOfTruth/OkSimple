@@ -90,5 +90,5 @@ limitations under the License.
 
 
 ### 联系方式
-email:xueyuejianxian@gmail.com（注明来自github）
+email:xueyuejianxian@gmail.com
 
