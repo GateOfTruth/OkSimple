@@ -1,19 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'
-//gradle clean build bintrayUpload -PbintrayUser=AlenXiao -PbintrayKey= -PdryRun=false
-publish {
-    def groupProjectID = 'com.alen.simpleutil'
-    def artifactProjectID = 'OkSimple'
-    def publishVersionID = '1.2.4'
-    userOrg = 'gateoftruth'
-    repoName = 'public'
-    groupId = groupProjectID
-    artifactId = artifactProjectID
-    publishVersion = publishVersionID
-    desc = 'simple okhttp util base on okhttp 4.x'
-    website = 'https://github.com/AllenXiao1994/OkSimple'
-}
+
 
 android {
     compileSdkVersion 29
