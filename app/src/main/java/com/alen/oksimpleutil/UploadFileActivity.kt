@@ -31,7 +31,6 @@ class UploadFileActivity : AppCompatActivity() {
             }
 
             override fun downloadProgress(url: String, total: Long, current: Long) {
-                super.downloadProgress(url, total, current)
             }
 
         })
