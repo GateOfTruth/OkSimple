@@ -46,7 +46,7 @@ class SimpleRequest(
 
     private lateinit var uploadFile: File
 
-    internal var defaultFileMediaType = OkSimple.DEFAULT_MEDIA_TYPE_STRING.toMediaType()
+    internal var defaultFileMediaType = OkSimpleConstant.STREAM_MEDIA_TYPE_STRING.toMediaType()
 
     internal var fileName = ""
 
@@ -54,7 +54,7 @@ class SimpleRequest(
 
 
     fun execute(callBack: ResultCallBack) {
-        if (type == "downloadFile") {
+        if (type ==OkSimpleConstant.DOWNLOAD_FILE) {
             OkSimple.cachedThreadPool.execute {
                 prepare(callBack)
                 OkSimple.mainHandler.post {
@@ -167,7 +167,7 @@ class SimpleRequest(
     fun addFormPart(
         key: String,
         file: File,
-        mediaType: String = OkSimple.DEFAULT_MEDIA_TYPE_STRING
+        mediaType: String = OkSimpleConstant.STREAM_MEDIA_TYPE_STRING
     ) = apply {
         formFileKeyList.add(key)
         formFileList.add(file)
@@ -184,11 +184,11 @@ class SimpleRequest(
 
         when (type) {
 
-            "get" -> {
+            OkSimpleConstant.GET -> {
 
             }
 
-            "post" -> {
+            OkSimpleConstant.POST -> {
                 val formBody = FormBody.Builder()
                 for ((k, v) in postParamsMap) {
                     formBody.add(k, v)
@@ -197,14 +197,14 @@ class SimpleRequest(
 
             }
 
-            "postJson" -> {
+            OkSimpleConstant.POST_JSON -> {
                 val requestBody =
-                    postJSONObject.toString().toRequestBody("application/json".toMediaType())
+                    postJSONObject.toString().toRequestBody(OkSimpleConstant.JSON_MEDIA_TYPE_STRING.toMediaType())
                 requestBuilder.post(requestBody)
 
             }
 
-            "getBitmap" -> {
+            OkSimpleConstant.GET_BITMAP -> {
                 val downloadBuilder = client.newBuilder()
                 downloadBuilder.networkInterceptors().clear()
                 downloadBuilder.interceptors().clear()
@@ -222,7 +222,7 @@ class SimpleRequest(
                 client = downloadBuilder.build()
             }
 
-            "downloadFile" -> {
+            OkSimpleConstant.DOWNLOAD_FILE -> {
                 val downloadBuilder = client.newBuilder()
                 downloadBuilder.networkInterceptors().clear()
                 downloadBuilder.interceptors().clear()
@@ -245,7 +245,7 @@ class SimpleRequest(
 
             }
 
-            "uploadFile" -> {
+            OkSimpleConstant.UPLOAD_FILE -> {
                 val downloadBuilder = client.newBuilder()
                 downloadBuilder.networkInterceptors().clear()
                 downloadBuilder.interceptors().clear()
@@ -253,13 +253,13 @@ class SimpleRequest(
                 requestBuilder.post(
                     ProgressRequestBody(
                         uploadFile.name,
-                        uploadFile.asRequestBody(defaultFileMediaType),
+                        uploadFile.asRequestBody(OkSimpleConstant.STREAM_MEDIA_TYPE_STRING.toMediaType()),
                         callBack
                     )
                 )
             }
 
-            "postForm" -> {
+            OkSimpleConstant.POST_FORM -> {
                 val downloadBuilder = client.newBuilder()
                 downloadBuilder.networkInterceptors().clear()
                 downloadBuilder.interceptors().clear()
