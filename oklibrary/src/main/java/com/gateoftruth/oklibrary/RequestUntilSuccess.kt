@@ -44,7 +44,7 @@ open class RequestUntilSuccess : RequestStrategy() {
      * 仅第一次ResultCallback调用start()函数
      */
     override fun callStartFunction(): Boolean {
-        return count == 1L
+        return count == 0L
 
     }
 

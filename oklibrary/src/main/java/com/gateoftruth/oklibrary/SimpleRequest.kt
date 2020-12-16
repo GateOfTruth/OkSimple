@@ -107,10 +107,10 @@ class SimpleRequest(
                 OkSimple.statusUrlMap[localTag] = true
             }
         }
-        strategy.count++
         if (strategy.callStartFunction()) {
             callBack?.start()
         }
+        strategy.count++
         client.newCall(strategy.getRequestBuilder(localRequestBuilder).build())
             .enqueue((object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
