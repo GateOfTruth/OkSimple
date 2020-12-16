@@ -62,7 +62,7 @@ allprojects {
 ```
 然后在app的build.gradle
 ```
-implementation 'com.alen.simpleutil:OkSimple:1.2.5'
+implementation 'com.gateoftruth.library:OkSimple:2.0'
 ```
 ##### 或者你也可以fork一下，自己编译，oksimple只依赖了okhttp，没有其他依赖，编译出来的aar包也只有30几KB，同时，Oksimple采用api引入okhttp，所以你引入了oksimple的话，就不用重新引入okhttp了。
 
