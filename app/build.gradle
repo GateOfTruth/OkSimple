@@ -10,7 +10,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.alen.oksimpleutil"
+        applicationId "com.gateoftruth.sample"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
