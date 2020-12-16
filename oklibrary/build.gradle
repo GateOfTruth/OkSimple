@@ -53,7 +53,7 @@ afterEvaluate {
 }
 
 bintray {
-    user='alenxiao'
+    user=''
     key=''
     publications = ['release']
     publish = true
