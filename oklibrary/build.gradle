@@ -64,7 +64,7 @@ bintray {
         desc = 'oksimple 1.2.5'
         userOrg = 'gateoftruth'
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/AllenXiao1994/OkSimple.git'
+        vcsUrl = 'https://github.com/GateOfTruth/OkSimple'
         publicDownloadNumbers = true
         version {
             name = vName
