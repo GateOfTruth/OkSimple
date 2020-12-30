@@ -33,7 +33,7 @@ abstract class RequestStrategy {
     abstract fun doRequestWhenOnFailure(call: Call, e: IOException): Boolean
 
     /**
-     *
+     *重写url或者header用
      */
     abstract fun getRequestBuilder(builder: Request.Builder): Request.Builder
 
