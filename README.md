@@ -39,7 +39,7 @@ allprojects {
 ```
 然后在app的build.gradle
 ```
-implementation 'com.gateoftruth.library:OkSimple:2.0.2'
+implementation 'com.gateoftruth.library:OkSimple:2.0.3'
 ```
 ##### 或者你也可以fork一下，自己编译，oksimple只依赖了okhttp，没有其他依赖，编译出来的aar包也只有30几KB，同时，Oksimple采用api引入okhttp，所以你引入了oksimple的话，就不用重新引入okhttp了。
 
@@ -47,6 +47,9 @@ implementation 'com.gateoftruth.library:OkSimple:2.0.2'
 使用方法现移动到[wiki](https://github.com/AllenXiao1994/OkSimple/wiki)，更加直观和便于查阅。请点击查看。
 
 ### 更新日志
+V2.0.3
+优化代码
+
 V2.0.2
 优化了策略系统，修正了一个错误
 
