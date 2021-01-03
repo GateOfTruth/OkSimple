@@ -22,6 +22,7 @@ class MyApplication : Application() {
             .readTimeout(100, TimeUnit.SECONDS)
             .cache(Cache(cacheDir, 1024 * 1024 * 10))
             .build()
+        OkSimple.addGlobalParams("globeparams", "1")
         OkSimple.application = this
         /*
         replace by your global params and global header

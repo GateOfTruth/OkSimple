@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-
 import com.gateoftruth.oklibrary.FileResultCallBack
 import com.gateoftruth.oklibrary.OkSimple
 import kotlinx.android.synthetic.main.activity_download.*
@@ -13,7 +12,7 @@ import java.io.File
 
 class DownloadActivity : AppCompatActivity() {
     private val url =
-        "https://alissl.ucdl.pp.uc.cn/fs08/2019/09/25/2/110_24d3e649d813bc6029be20a812f56797.apk?fname=%E5%92%AA%E5%92%95%E9%98%85%E8%AF%BB&data=dGVzdFRhZz1uZXdgY3BUeXBlPTIxYGJpZD1udWxsYGRLZXk9OGM2M2Q2ZjlmYzFiNWNjOTllMmRlNDYwNWRkNDQxMWRgaUtleT1lMzhiMDJkODFmMWQzYzJhYzRhZTI5MThkM2VmYzFkZWBkZktleT00MjBhMjA3NzA2ZjFiOWY1NWU4NTY1OTNlYmM2ZTYxMWBhZHhDcFR5cGU9MjE&productid=2011&pkgType=1&packageid=800823369&pkg=com.ophone.reader.ui&vcode=185&yingid=wdj_web&pos=wdj_web%2Fdetail_normal_dl%2F0&appid=280087&apprd=280087&iconUrl=http%3A%2F%2Fandroid-artworks.25pp.com%2Ffs08%2F2019%2F09%2F26%2F10%2F110_bd3a7ab02270602524832113a5512c71_con.png&did=08f7fe32d0b3fa0d40c724875108cc87&md5=fad8c6e11b40cb1fd8cb2822440455e7"
+        "https://sqdd.myapp.com/myapp/qqteam/qq_hd/apad/qqhd_hd_5.8.8.3445_release.apk"
     private val name = "read.apk"
     private var path = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +40,7 @@ class DownloadActivity : AppCompatActivity() {
 
                     override fun failure(call: Call, e: Exception) {
                         e.printStackTrace()
+                        Toast.makeText(this@DownloadActivity, "下载失败", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun finish(file: File) {
@@ -61,6 +61,10 @@ class DownloadActivity : AppCompatActivity() {
                         val realPercent = (percent * 100).toInt()
                         Log.e("progress", "current:$current\t\ttotal:$total\t$realPercent")
                         progress.progress = realPercent
+                    }
+
+                    override fun start() {
+
                     }
 
                 })

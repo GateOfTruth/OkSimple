@@ -3,6 +3,7 @@ package com.gateoftruth.oklibrary
 import okhttp3.Call
 import okhttp3.Response
 import java.io.File
+import java.io.IOException
 import java.io.RandomAccessFile
 
 
@@ -41,7 +42,11 @@ abstract class FileResultCallBack :
             }
             randomAccessFile.close()
             OkSimple.mainHandler.post {
-                finish(file)
+                if (!file.exists() || file.length() == 0L) {
+                    otherException(call, response, IOException("File Download Failure"))
+                } else {
+                    finish(file)
+                }
             }
         } catch (e: Exception) {
             OkSimple.mainHandler.post {

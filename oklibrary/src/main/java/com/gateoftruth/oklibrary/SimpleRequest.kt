@@ -40,7 +40,7 @@ class SimpleRequest(
 
     var tag = requestUrl
 
-    private val requestBuilder = Request.Builder()
+    private var requestBuilder = Request.Builder()
 
     private var postJSONObject = JSONObject()
 
@@ -66,12 +66,21 @@ class SimpleRequest(
             localVar = DefaultStrategy()
         }
         localVar.strategyResultCallBack = callBack
+        if (localVar.callStartFunction()) {
+            callBack.start()
+        }
+        if (OkSimple.preventContinuousRequests) {
+            val status = OkSimple.statusUrlMap[tag] ?: false
+            if (status) {
+                return
+            } else {
+                OkSimple.statusUrlMap[tag] = true
+            }
+        }
         if (type == OkSimpleConstant.DOWNLOAD_FILE) {
             OkSimple.cachedThreadPool.execute {
                 prepare(callBack)
-                OkSimple.mainHandler.post {
-                    process(localVar)
-                }
+                process(localVar)
             }
         } else {
             prepare(callBack)
@@ -99,52 +108,45 @@ class SimpleRequest(
             }
             localRequestBuilder = requestBuilder
         }
-        if (OkSimple.preventContinuousRequests) {
-            val status = OkSimple.statusUrlMap[localTag] ?: false
-            if (status) {
-                return
-            } else {
-                OkSimple.statusUrlMap[localTag] = true
-            }
-        }
-        if (strategy.callStartFunction()) {
-            callBack?.start()
-        }
+        val finalRequest = strategy.getRequestBuilder(localRequestBuilder).build()
         strategy.count++
-        client.newCall(strategy.getRequestBuilder(localRequestBuilder).build())
-            .enqueue((object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    if (strategy.doResultCallBackFailure(call, e)) {
-                        OkSimple.mainHandler.post {
-                            callBack?.failure(call, e)
-                        }
-                    }
-                    OkSimple.statusUrlMap.remove(localTag)
-                    if (strategy.doRequestWhenOnFailure(call, e)) {
-                        strategy.strategyCall = call
-                        startRequestStrategy(strategy)
-                        OkSimple.tagStrategyMap[localTag] = strategy
-                    } else {
-                        OkSimple.tagStrategyMap.remove(localTag)
-                    }
-
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    if (strategy.doResultCallBackResponse(call, response)) {
-                        callBack?.response(call, response)
-                    }
-                    OkSimple.statusUrlMap.remove(localTag)
-                    if (strategy.doRequestWhenOnResponse(call, response)) {
-                        strategy.strategyCall = call
-                        startRequestStrategy(strategy)
-                        OkSimple.tagStrategyMap[localTag] = strategy
-                    } else {
-                        OkSimple.tagStrategyMap.remove(localTag)
+        client.newCall(finalRequest).enqueue((object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                if (strategy.doResultCallBackFailure(call, e)) {
+                    OkSimple.mainHandler.post {
+                        callBack?.failure(call, e)
                     }
                 }
+                if (OkSimple.preventContinuousRequests) {
+                    OkSimple.statusUrlMap.remove(localTag)
+                }
+                if (strategy.doRequestWhenOnFailure(call, e)) {
+                    strategy.strategyCall = call
+                    startRequestStrategy(strategy)
+                    OkSimple.tagStrategyMap[localTag] = strategy
+                } else {
+                    OkSimple.tagStrategyMap.remove(localTag)
+                }
 
-            }))
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (strategy.doResultCallBackResponse(call, response)) {
+                    callBack?.response(call, response)
+                }
+                if (OkSimple.preventContinuousRequests) {
+                    OkSimple.statusUrlMap.remove(localTag)
+                }
+                if (strategy.doRequestWhenOnResponse(call, response)) {
+                    strategy.strategyCall = call
+                    startRequestStrategy(strategy)
+                    OkSimple.tagStrategyMap[localTag] = strategy
+                } else {
+                    OkSimple.tagStrategyMap.remove(localTag)
+                }
+            }
+
+        }))
     }
 
     private fun startRequestStrategy(requestStrategy: RequestStrategy) {
@@ -232,13 +234,11 @@ class SimpleRequest(
     }
 
     internal fun prepare(callBack: ResultCallBack): OkHttpClient {
-
         appendParamsMapToUrl(OkSimple.globalParamsMap)
         for ((k, v) in OkSimple.globalHeaderMap) {
             requestBuilder.header(k, v)
         }
         appendParamsMapToUrl(paramsMap)
-
         when (type) {
 
             OkSimpleConstant.GET -> {
@@ -282,12 +282,19 @@ class SimpleRequest(
             OkSimpleConstant.DOWNLOAD_FILE -> {
                 val file = File(filePath, fileName)
                 val downloadLength = if (file.exists()) file.length() else 0
-                val downloadResponse =
-                    client.newCall(requestBuilder.url(requestUrl).build()).execute()
-                val contentLength = downloadResponse.headersContentLength()
                 val downloadBean = DownloadBean()
+                var contentLength = 0L
                 downloadBean.url = requestUrl
-                downloadBean.contentLength = contentLength
+                try {
+                    val headRequest = requestBuilder.url(requestUrl).head().build();
+                    val downloadResponse =
+                        client.newCall(headRequest).execute()
+                    contentLength = downloadResponse.headersContentLength()
+                    requestBuilder = headRequest.newBuilder().get()
+                    downloadBean.contentLength = contentLength
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
                 downloadBean.downloadLength = downloadLength
                 downloadBean.filePath = filePath
                 downloadBean.filename = fileName

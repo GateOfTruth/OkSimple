@@ -3,14 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
-def vName="2.0.1"
+def vName="2.0.2"
 android {
     compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 20
+        versionCode 22
         versionName vName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
