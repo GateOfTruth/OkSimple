@@ -3,14 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
-def vName="2.0.2"
+def vName="2.0.3"
 android {
     compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 22
+        versionCode 23
         versionName vName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -62,7 +62,7 @@ bintray {
     pkg {
         repo = 'public'
         name = myArtifactId
-        desc = 'oksimple 2.0.1'
+        desc = 'oksimple 2.0.3'
         userOrg = 'gateoftruth'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/GateOfTruth/OkSimple'

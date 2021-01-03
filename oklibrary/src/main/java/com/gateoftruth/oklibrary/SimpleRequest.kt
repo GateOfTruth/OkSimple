@@ -96,15 +96,15 @@ class SimpleRequest(
         val localRequestBuilder: Request.Builder
         if (strategyCall != null) {
             localRequestBuilder = strategyCall.request().newBuilder()
-            localTag = strategy.strategyCall?.request()?.tag()?.toString() ?: ""
+            localTag = strategyCall.request().tag().toString()
         } else {
             localTag = tag
             val cache = requestCacheControl
             requestBuilder.url(requestUrl).tag(localTag)
-            if (OkSimple.networkUnavailableForceCache && !OksimpleNetworkUtil.isNetworkAvailable()) {
-                requestBuilder.cacheControl(CacheControl.FORCE_CACHE)
-            } else if (cache != null) {
+            if (cache!=null){
                 requestBuilder.cacheControl(cache)
+            }else if (OkSimple.networkUnavailableForceCache && !OksimpleNetworkUtil.isNetworkAvailable()){
+                requestBuilder.cacheControl(CacheControl.FORCE_CACHE)
             }
             localRequestBuilder = requestBuilder
         }
@@ -286,7 +286,7 @@ class SimpleRequest(
                 var contentLength = 0L
                 downloadBean.url = requestUrl
                 try {
-                    val headRequest = requestBuilder.url(requestUrl).head().build();
+                    val headRequest = requestBuilder.url(requestUrl).head().build()
                     val downloadResponse =
                         client.newCall(headRequest).execute()
                     contentLength = downloadResponse.headersContentLength()
