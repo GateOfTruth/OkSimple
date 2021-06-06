@@ -3,14 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 group = "com.github.GateOfTruth"
 
-def vName="2.0.4"
+def vName="2.0.6"
 android {
     compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 23
+        versionCode 26
         versionName vName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -46,7 +46,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.gateoftruth.library'
                 artifactId = 'OkSimple'
-                version = '2.0.4'
+                version = vName
             }
         }
     }
