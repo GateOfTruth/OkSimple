@@ -25,21 +25,18 @@ github上的demo演示里，用的都是第三方的地址。但功能的话，�
 
 
 ### 接入方法
-在根节点的build.gradle
+在根节点的build.gradle引入jitpack
 ```
 allprojects {
     repositories {
         google()
-        jcenter()
-        maven {
-            url  "https://dl.bintray.com/gateoftruth/public"
-        }
+        maven { url 'https://jitpack.io' }
     }
 }
 ```
 然后在app的build.gradle
 ```
-implementation 'com.gateoftruth.library:OkSimple:2.0.3'
+implementation 'com.github.GateOfTruth:OkSimple:2.0.6'
 ```
 ##### 或者你也可以fork一下，自己编译，oksimple只依赖了okhttp，没有其他依赖，编译出来的aar包也只有30几KB，同时，Oksimple采用api引入okhttp，所以你引入了oksimple的话，就不用重新引入okhttp了。
 
