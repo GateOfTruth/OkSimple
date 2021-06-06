@@ -1,9 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
+group = "com.github.GateOfTruth"
 
-def vName="2.0.3"
+def vName="2.0.4"
 android {
     compileSdkVersion 30
 
@@ -35,44 +35,9 @@ dependencies {
     api 'com.squareup.okhttp3:okhttp:4.9.0'
 
 }
-def myArtifactId="OkSimple"
-afterEvaluate {
-    publishing{
-        publications{
-            release(MavenPublication) {
-                // Applies the component for the release build variant.
-                from components.release
 
-                // You can then customize attributes of the publication as shown below.
-                groupId = 'com.gateoftruth.library'
-                artifactId = myArtifactId
-                version = vName
-            }
-        }
-    }
-}
 
-//./gradlew clean build bintrayUpload
-bintray {
-    user=''
-    key=''
-    publications = ['release']
-    publish = true
-    override = true
-    pkg {
-        repo = 'public'
-        name = myArtifactId
-        desc = 'oksimple 2.0.3'
-        userOrg = 'gateoftruth'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/GateOfTruth/OkSimple'
-        publicDownloadNumbers = true
-        version {
-            name = vName
-            released = new Date()
-        }
-    }
-}
+
 
 
 
