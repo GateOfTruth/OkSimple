@@ -7,7 +7,7 @@ import okio.*
 class ProgressResponseBody(
     private val url: String,
     private val rawResponse: ResponseBody,
-    private val baseProgressListener: BaseProgressListener
+    private val baseProgressListener: BaseProgressListener?
 ) : ResponseBody() {
     private val source: BufferedSource? = null
     override fun contentLength(): Long {
@@ -31,7 +31,7 @@ class ProgressResponseBody(
                 if (byteRead != -1L) {
                     downloadByte += byteRead
                 }
-                baseProgressListener.downloadProgress(
+                baseProgressListener?.downloadProgress(
                     url,
                     rawResponse.contentLength(),
                     downloadByte

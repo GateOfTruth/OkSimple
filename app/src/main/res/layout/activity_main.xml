@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context="com.gateoftruth.sample.MainActivity">
 
-    <Button
+
+        <Button
             android:id="@+id/btn_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -14,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+        <Button
             android:id="@+id/btn_get"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_download" />
 
-    <Button
+        <Button
             android:id="@+id/btn_post_params"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_get" />
 
-    <Button
+        <Button
             android:id="@+id/btn_post_json"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,52 +43,62 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_post_params" />
 
-    <Button
-        android:id="@+id/btn_bitmap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="bitmap"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_post_json" />
+        <Button
+            android:id="@+id/btn_bitmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bitmap"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_post_json" />
 
-    <Button
-        android:id="@+id/btn_upload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="upload"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_bitmap" />
+        <Button
+            android:id="@+id/btn_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="upload"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_bitmap" />
 
-    <Button
-        android:id="@+id/btn_post_form"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="postForm"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_upload" />
+        <Button
+            android:id="@+id/btn_post_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="postForm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_upload" />
 
-    <Button
-        app:layout_constraintTop_toBottomOf="@+id/btn_post_form"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="glideTest"
-        android:id="@+id/btn_glide_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_glide_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="glideTest"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_post_form" />
 
-    <Button
-        app:layout_constraintTop_toBottomOf="@+id/btn_glide_test"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="brotliTest"
-        android:id="@+id/btn_brotli_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_brotli_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="brotliTest"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_glide_test" />
 
-    <Button
-        app:layout_constraintTop_toBottomOf="@+id/btn_brotli_test"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="multipleDownload"
-        android:id="@+id/btn_multiple_download"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_multiple_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="multipleDownload"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_brotli_test" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btn_synchronize_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="synchronizeRequest"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_multiple_download" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

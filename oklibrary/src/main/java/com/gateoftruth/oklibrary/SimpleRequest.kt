@@ -9,9 +9,6 @@ import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 
-/**
- *  different request can use different okHttpClient,or use default okHttpClient
- */
 class SimpleRequest(
     url: String = "",
     private val type: String = OkSimpleConstant.GET
@@ -27,9 +24,6 @@ class SimpleRequest(
 
     private val formParamsMap = hashMapOf<String, String>()
 
-    /**
-     * use the list because the key can be same
-     */
     private val formFileKeyList = mutableListOf<String>()
 
     private val formFileList = mutableListOf<File>()
@@ -59,6 +53,30 @@ class SimpleRequest(
         return this
     }
 
+    fun executeSynchronize():SynchronizeBean{
+        val synchronizeBean=SynchronizeBean()
+        try {
+            if (OkSimple.preventContinuousRequests) {
+                val status = OkSimple.statusUrlMap[tag] ?: false
+                if (status) {
+                    synchronizeBean.exception=RuntimeException("ContinuousRequests")
+                }else{
+                    OkSimple.statusUrlMap[tag] = true
+                    prepare(null)
+                    synchronizeBean.response=processSynchronize()
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+            synchronizeBean.exception=e
+        }finally {
+            if (OkSimple.preventContinuousRequests) {
+                OkSimple.statusUrlMap.remove(tag)
+            }
+            return synchronizeBean
+        }
+    }
+
 
     fun execute(callBack: ResultCallBack) {
         var localVar = requestStrategy
@@ -86,6 +104,17 @@ class SimpleRequest(
             prepare(callBack)
             process(localVar)
         }
+    }
+
+    private fun processSynchronize():Response {
+        val cache = requestCacheControl
+        requestBuilder.url(requestUrl).tag(tag)
+        if (cache!=null){
+            requestBuilder.cacheControl(cache)
+        }else if (OkSimple.networkUnavailableForceCache && !OksimpleNetworkUtil.isNetworkAvailable()){
+            requestBuilder.cacheControl(CacheControl.FORCE_CACHE)
+        }
+        return client.newCall(requestBuilder.build()).execute()
     }
 
 
@@ -233,7 +262,7 @@ class SimpleRequest(
         formFileMediaTypeList.add(mediaType.toMediaType())
     }
 
-    internal fun prepare(callBack: ResultCallBack): OkHttpClient {
+    internal fun prepare(callBack: ResultCallBack?): OkHttpClient {
         appendParamsMapToUrl(OkSimple.globalParamsMap)
         for ((k, v) in OkSimple.globalHeaderMap) {
             requestBuilder.header(k, v)
@@ -265,16 +294,13 @@ class SimpleRequest(
             OkSimpleConstant.GET_BITMAP -> {
                 val bitmapBuilder = client.newBuilder()
                 val interceptors = bitmapBuilder.interceptors()
-                interceptors.add(0, object : Interceptor {
-                    override fun intercept(chain: Interceptor.Chain): Response {
-                        val request = chain.request()
-                        val url = request.url.toString()
-                        val originalResponse = chain.proceed(request)
-                        val originalResponseBody = originalResponse.body
-                        return if (originalResponseBody == null) originalResponse else originalResponse.newBuilder()
-                            .body(ProgressResponseBody(url, originalResponseBody, callBack)).build()
-
-                    }
+                interceptors.add(0, Interceptor { chain ->
+                    val request = chain.request()
+                    val url = request.url.toString()
+                    val originalResponse = chain.proceed(request)
+                    val originalResponseBody = originalResponse.body
+                    if (originalResponseBody == null) originalResponse else originalResponse.newBuilder()
+                        .body(ProgressResponseBody(url, originalResponseBody, callBack)).build()
                 })
                 client = bitmapBuilder.build()
             }
@@ -298,7 +324,9 @@ class SimpleRequest(
                 downloadBean.downloadLength = downloadLength
                 downloadBean.filePath = filePath
                 downloadBean.filename = fileName
-                callBack.urlToBeanMap[requestUrl] = downloadBean
+                if (callBack!=null){
+                    callBack.urlToBeanMap[requestUrl] = downloadBean
+                }
                 if (contentLength > 0) {
                     requestBuilder.addHeader("RANGE", "bytes=$downloadLength-$contentLength")
                 }

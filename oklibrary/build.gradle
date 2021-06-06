@@ -3,14 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 group = "com.github.GateOfTruth"
 
-def vName="2.0.6"
+def vName="3.0.0"
 android {
     compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 26
+        versionCode 30
         versionName vName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -28,9 +28,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api 'com.squareup.okhttp3:okhttp:4.9.0'
 

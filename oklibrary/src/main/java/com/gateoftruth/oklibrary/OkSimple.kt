@@ -43,9 +43,6 @@ object OkSimple {
         globalHeaderMap[key] = value
     }
 
-    /**
-     * append to url
-     */
     fun addGlobalParams(key: String, value: String) {
         globalParamsMap[key] = value
     }

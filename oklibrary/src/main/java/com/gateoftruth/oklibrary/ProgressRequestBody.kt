@@ -7,7 +7,7 @@ import okio.*
 class ProgressRequestBody(
     private val fileName: String,
     private val requestBody: RequestBody,
-    private val baseProgressListener: BaseProgressListener
+    private val baseProgressListener: BaseProgressListener?
 ) : RequestBody() {
     override fun contentType(): MediaType? {
         return requestBody.contentType()
@@ -25,7 +25,7 @@ class ProgressRequestBody(
             override fun write(source: Buffer, byteCount: Long) {
                 super.write(source, byteCount)
                 uploadByte += byteCount
-                baseProgressListener.uploadProgress(
+                baseProgressListener?.uploadProgress(
                     fileName,
                     requestBody.contentLength(),
                     uploadByte
