@@ -44,19 +44,6 @@ implementation 'com.github.GateOfTruth:OkSimple:3.0.0'
 ### 使用方法
 使用方法现移动到[wiki](https://github.com/AllenXiao1994/OkSimple/wiki)，更加直观和便于查阅。请点击查看。
 
-### 更新日志
-V2.0.3
-优化代码
-
-V2.0.2
-优化了策略系统，修正了一个错误
-
-V2.0.1
-修复了策略系统下标问题
-
-V2.0.0
-新增了策略系统，减少了无用的对象创建，优化了性能
-
 License
 -------
 
