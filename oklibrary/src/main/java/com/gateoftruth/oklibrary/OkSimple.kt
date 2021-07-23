@@ -47,46 +47,77 @@ object OkSimple {
         globalParamsMap[key] = value
     }
 
-    fun get(url: String): SimpleRequest {
-        return SimpleRequest(url, OkSimpleConstant.GET)
+    fun get(url: String, isSync: Boolean = false): BaseRequest {
+        return if (isSync) SynchronizeRequest(url, OkSimpleConstant.GET) else AsynchronousRequest(
+            url,
+            OkSimpleConstant.GET
+        )
     }
 
-    fun postJson(url: String, jsonObject: JSONObject): SimpleRequest {
-        val request = SimpleRequest(url, OkSimpleConstant.POST_JSON)
+    fun postJson(url: String, jsonObject: JSONObject, isSync: Boolean = false): BaseRequest {
+        val request = if (isSync) SynchronizeRequest(
+            url,
+            OkSimpleConstant.POST_JSON
+        ) else AsynchronousRequest(url, OkSimpleConstant.POST_JSON)
         request.postJson(jsonObject)
         return request
     }
 
-    fun post(url: String, valueMap: Map<String, String> = HashMap()): SimpleRequest {
-        val request = SimpleRequest(url, OkSimpleConstant.POST)
+    fun post(
+        url: String,
+        valueMap: Map<String, String> = HashMap(),
+        isSync: Boolean = false
+    ): BaseRequest {
+        val request =
+            if (isSync) SynchronizeRequest(url, OkSimpleConstant.POST) else AsynchronousRequest(
+                url,
+                OkSimpleConstant.POST
+            )
         request.post(valueMap)
         return request
     }
 
-    fun downloadFile(url: String, filename: String, filePath: String): SimpleRequest {
-        val request = SimpleRequest(url, OkSimpleConstant.DOWNLOAD_FILE)
+    fun downloadFile(
+        url: String,
+        filename: String,
+        filePath: String,
+        isSync: Boolean = false
+    ): BaseRequest {
+        val request = if (isSync) SynchronizeRequest(
+            url,
+            OkSimpleConstant.DOWNLOAD_FILE
+        ) else AsynchronousRequest(url, OkSimpleConstant.DOWNLOAD_FILE)
         request.fileName = filename
         request.filePath = filePath
         return request
     }
 
-    fun getBitmap(url: String): SimpleRequest {
-        return SimpleRequest(url, OkSimpleConstant.GET_BITMAP)
+    fun getBitmap(url: String, isSync: Boolean = false): BaseRequest {
+        return if (isSync) SynchronizeRequest(
+            url,
+            OkSimpleConstant.GET_BITMAP
+        ) else AsynchronousRequest(url, OkSimpleConstant.GET_BITMAP)
     }
 
     fun uploadFile(
         url: String,
         file: File,
-        mediaType: String = OkSimpleConstant.STREAM_MEDIA_TYPE_STRING
-    ): SimpleRequest {
-        val request = SimpleRequest(url, OkSimpleConstant.UPLOAD_FILE)
+        mediaType: String = OkSimpleConstant.STREAM_MEDIA_TYPE_STRING, isSync: Boolean = false
+    ): BaseRequest {
+        val request = if (isSync) SynchronizeRequest(
+            url,
+            OkSimpleConstant.UPLOAD_FILE
+        ) else AsynchronousRequest(url, OkSimpleConstant.UPLOAD_FILE)
         request.uploadFile(file)
         request.defaultFileMediaType = mediaType.toMediaType()
         return request
     }
 
-    fun postForm(url: String): SimpleRequest {
-        return SimpleRequest(url, OkSimpleConstant.POST_FORM)
+    fun postForm(url: String, isSync: Boolean = false): BaseRequest {
+        return if (isSync) SynchronizeRequest(
+            url,
+            OkSimpleConstant.POST_FORM
+        ) else AsynchronousRequest(url, OkSimpleConstant.POST_FORM)
     }
 
     fun <G : GlideCallBack> getGlideClient(listener: G): OkHttpClient {
@@ -94,7 +125,7 @@ object OkSimple {
     }
 
     internal fun strategyRequest(strategy: RequestStrategy) {
-        SimpleRequest().process(strategy)
+        AsynchronousRequest("","").process(strategy)
     }
 
 
