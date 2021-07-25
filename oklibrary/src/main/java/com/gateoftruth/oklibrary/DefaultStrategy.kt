@@ -9,19 +9,19 @@ import java.io.IOException
  * 默认的策略，无论成功失败和返回结果，都只请求一次
  */
 open class DefaultStrategy : RequestStrategy() {
-    override fun doRequestWhenOnResponse(call: Call, response: Response): Boolean {
+    override fun requestAgainOnResponse(call: Call, response: Response): Boolean {
         return false
     }
 
-    override fun doResultCallBackResponse(call: Call, response: Response): Boolean {
+    override fun callBackResponse(call: Call, response: Response): Boolean {
         return true
     }
 
-    override fun doResultCallBackFailure(call: Call, e: IOException): Boolean {
+    override fun callBackFailure(call: Call, e: IOException): Boolean {
         return true
     }
 
-    override fun doRequestWhenOnFailure(call: Call, e: IOException): Boolean {
+    override fun requestAgainOnFailure(call: Call, e: IOException): Boolean {
         return false
     }
 
@@ -29,15 +29,15 @@ open class DefaultStrategy : RequestStrategy() {
         return builder
     }
 
-    override fun delay(): Long {
+    override fun requestDelay(): Long {
         return 0
     }
 
-    override fun maxNumberOfTimes(): Long {
+    override fun maxRequestTimes(): Long {
         return 0
     }
 
-    override fun callStartFunction(): Boolean {
+    override fun callBackStart(): Boolean {
         return true
     }
 }

@@ -8,7 +8,7 @@ class OksimpleHandler : Handler(Looper.getMainLooper()) {
     override fun handleMessage(msg: Message) {
         if (msg.what == OkSimpleConstant.STRATEGY_MESSAGE) {
             val strategy = msg.obj as RequestStrategy
-            val max = strategy.maxNumberOfTimes()
+            val max = strategy.maxRequestTimes()
             if (max > strategy.count) {
                 OkSimple.strategyRequest(strategy)
             }

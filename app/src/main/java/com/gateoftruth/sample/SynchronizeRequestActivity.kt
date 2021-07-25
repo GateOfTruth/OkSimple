@@ -10,7 +10,7 @@ class SynchronizeRequestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_synchronize_request)
         val thread=object :Thread(){
             override fun run() {
-                val bean=OkSimple.get("http://api.juheapi.com/japi/toh",true)
+                val bean=OkSimple.get("http://api.juheapi.com/japi/toh",isSync = true)
                     .params("month", "1")
                     .params("day", "1")
                     .params("key", "a4a8acd821a6412a361310249f085d96").execute(GsonSyncBeanBase(ExampleBean::class.java)).responseToData()

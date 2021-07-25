@@ -9,19 +9,19 @@ import java.io.IOException
  * 只要请求失败，就一直请求，直到成功
  */
 open class RequestUntilSuccess : RequestStrategy() {
-    override fun doRequestWhenOnResponse(call: Call, response: Response): Boolean {
+    override fun requestAgainOnResponse(call: Call, response: Response): Boolean {
         return false
     }
 
-    override fun doResultCallBackResponse(call: Call, response: Response): Boolean {
+    override fun callBackResponse(call: Call, response: Response): Boolean {
         return true
     }
 
-    override fun doResultCallBackFailure(call: Call, e: IOException): Boolean {
+    override fun callBackFailure(call: Call, e: IOException): Boolean {
         return true
     }
 
-    override fun doRequestWhenOnFailure(call: Call, e: IOException): Boolean {
+    override fun requestAgainOnFailure(call: Call, e: IOException): Boolean {
         return true
     }
 
@@ -32,18 +32,18 @@ open class RequestUntilSuccess : RequestStrategy() {
     /**
      * 失败之后每隔五秒请求一次
      */
-    override fun delay(): Long {
+    override fun requestDelay(): Long {
         return 5000
     }
 
-    override fun maxNumberOfTimes(): Long {
+    override fun maxRequestTimes(): Long {
         return Long.MAX_VALUE
     }
 
     /**
      * 仅第一次ResultCallback调用start()函数
      */
-    override fun callStartFunction(): Boolean {
+    override fun callBackStart(): Boolean {
         return count == 0L
 
     }

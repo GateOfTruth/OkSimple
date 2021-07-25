@@ -11,7 +11,7 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
             localVar = DefaultStrategy()
         }
         localVar.strategyResultCallBack = callBack
-        if (localVar.callStartFunction()) {
+        if (localVar.callBackStart()) {
             callBack.start()
         }
         if (OkSimple.preventContinuousRequests) {
@@ -56,7 +56,7 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
         strategy.count++
         client.newCall(finalRequest).enqueue((object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                if (strategy.doResultCallBackFailure(call, e)) {
+                if (strategy.callBackFailure(call, e)) {
                     OkSimple.mainHandler.post {
                         callBack?.failure(call, e)
                     }
@@ -64,7 +64,7 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
                 if (OkSimple.preventContinuousRequests) {
                     OkSimple.statusUrlMap.remove(localTag)
                 }
-                if (strategy.doRequestWhenOnFailure(call, e)) {
+                if (strategy.requestAgainOnFailure(call, e)) {
                     strategy.strategyCall = call
                     startRequestStrategy(strategy)
                     OkSimple.tagStrategyMap[localTag] = strategy
@@ -75,13 +75,13 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                if (strategy.doResultCallBackResponse(call, response)) {
+                if (strategy.callBackResponse(call, response)) {
                     callBack?.response(call, response)
                 }
                 if (OkSimple.preventContinuousRequests) {
                     OkSimple.statusUrlMap.remove(localTag)
                 }
-                if (strategy.doRequestWhenOnResponse(call, response)) {
+                if (strategy.requestAgainOnResponse(call, response)) {
                     strategy.strategyCall = call
                     startRequestStrategy(strategy)
                     OkSimple.tagStrategyMap[localTag] = strategy
@@ -97,7 +97,7 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
         val message = OkSimple.mainHandler.obtainMessage()
         message.what = OkSimpleConstant.STRATEGY_MESSAGE
         message.obj = requestStrategy
-        OkSimple.mainHandler.sendMessageDelayed(message, requestStrategy.delay())
+        OkSimple.mainHandler.sendMessageDelayed(message, requestStrategy.requestDelay())
     }
 
     override fun <T> execute(bean: BaseSynchronizeBean<T>?): BaseSynchronizeBean<T> {

@@ -15,22 +15,22 @@ abstract class RequestStrategy {
     /**
      * 返回response时候是否继续请求
      */
-    abstract fun doRequestWhenOnResponse(call: Call, response: Response): Boolean
+    abstract fun requestAgainOnResponse(call: Call, response: Response): Boolean
 
     /**
      * 是否调用ResultCallBack的Response方法
      */
-    abstract fun doResultCallBackResponse(call: Call, response: Response): Boolean
+    abstract fun callBackResponse(call: Call, response: Response): Boolean
 
     /**
      * 是否调用ResultCallBack的Failure方法
      */
-    abstract fun doResultCallBackFailure(call: Call, e: IOException): Boolean
+    abstract fun callBackFailure(call: Call, e: IOException): Boolean
 
     /**
      * 失败时候的是否请求
      */
-    abstract fun doRequestWhenOnFailure(call: Call, e: IOException): Boolean
+    abstract fun requestAgainOnFailure(call: Call, e: IOException): Boolean
 
     /**
      *重写url或者header用
@@ -40,17 +40,17 @@ abstract class RequestStrategy {
     /**
      * 延迟时间毫秒数
      */
-    abstract fun delay(): Long
+    abstract fun requestDelay(): Long
 
     /**
      * 最大请求次数
      */
-    abstract fun maxNumberOfTimes(): Long
+    abstract fun maxRequestTimes(): Long
 
     /**
      * 是否调用ResultCallBack里的start方法
      */
-    abstract fun callStartFunction(): Boolean
+    abstract fun callBackStart(): Boolean
 
 
 }
