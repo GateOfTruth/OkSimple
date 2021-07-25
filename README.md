@@ -44,6 +44,10 @@ implementation 'com.github.GateOfTruth:OkSimple:3.1.0'
 ### 使用方法
 使用方法现移动到[wiki](https://github.com/AllenXiao1994/OkSimple/wiki)，更加直观和便于查阅。请点击查看。
 
+### 更新日志
+[点击这里](https://github.com/GateOfTruth/OkSimple/releases)查看每次版本更新
+
+
 License
 -------
 
