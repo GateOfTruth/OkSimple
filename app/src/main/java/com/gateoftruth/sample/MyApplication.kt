@@ -20,7 +20,7 @@ class MyApplication : Application() {
             .connectTimeout(100, TimeUnit.SECONDS)
             .writeTimeout(100, TimeUnit.SECONDS)
             .readTimeout(100, TimeUnit.SECONDS)
-            .cache(Cache(cacheDir, 1024 * 1024 * 10))
+            .cache(Cache(cacheDir, 1024L * 1024 * 10))
             .build()
         OkSimple.addGlobalParams("globeparams", "1")
         OkSimple.application = this
