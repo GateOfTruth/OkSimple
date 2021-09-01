@@ -3,6 +3,7 @@ package com.gateoftruth.oklibrary
 import android.app.Application
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import org.json.JSONObject
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -120,12 +121,27 @@ object OkSimple {
         ) else AsynchronousRequest(url, OkSimpleConstant.POST_FORM)
     }
 
+    fun method(
+        url: String,
+        methodName: String,
+        requestBody: RequestBody? = null,
+        isSync: Boolean = false
+    ): BaseRequest {
+        val request =
+            if (isSync) SynchronizeRequest(url, OkSimpleConstant.METHOD) else AsynchronousRequest(
+                url,
+                OkSimpleConstant.METHOD
+            )
+        request.method(methodName, requestBody)
+        return request
+    }
+
     fun <G : GlideCallBack> getGlideClient(listener: G): OkHttpClient {
         return getBitmap("").prepare(listener)
     }
 
     internal fun strategyRequest(strategy: RequestStrategy) {
-        AsynchronousRequest("","").process(strategy)
+        AsynchronousRequest("", "").process(strategy)
     }
 
 

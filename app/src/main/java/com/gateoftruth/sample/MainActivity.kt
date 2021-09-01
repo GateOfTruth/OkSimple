@@ -53,5 +53,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SynchronizeRequestActivity::class.java))
         }
 
+        btn_method_request.setOnClickListener {
+            startActivity(Intent(this, MethodActivity::class.java))
+        }
+
     }
 }

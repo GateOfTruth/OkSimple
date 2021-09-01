@@ -44,6 +44,11 @@ abstract class BaseRequest(val url: String, val type: String) {
 
     protected var requestStrategy: RequestStrategy? = null
 
+    protected var methodName = OkSimpleConstant.GET
+
+    protected var methodRequestBody: RequestBody? = null
+
+
     fun setRequestStrategy(requestStrategy: RequestStrategy): BaseRequest {
         this.requestStrategy = requestStrategy
         return this
@@ -58,7 +63,7 @@ abstract class BaseRequest(val url: String, val type: String) {
         when (type) {
 
             OkSimpleConstant.GET -> {
-
+                requestBuilder.get()
             }
 
             OkSimpleConstant.POST -> {
@@ -152,6 +157,9 @@ abstract class BaseRequest(val url: String, val type: String) {
                 requestBuilder.post(multipartBodyBuilder.build())
             }
 
+            OkSimpleConstant.METHOD -> {
+                requestBuilder.method(methodName, methodRequestBody)
+            }
         }
 
         return client
@@ -214,6 +222,11 @@ abstract class BaseRequest(val url: String, val type: String) {
 
     fun uploadFile(file: File) = apply {
         uploadFile = file
+    }
+
+    fun method(methodName: String, requestBody: RequestBody?) = apply {
+        this.methodName = methodName
+        methodRequestBody = requestBody
     }
 
     fun addFormPart(key: String, value: String) = apply {

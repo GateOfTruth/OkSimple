@@ -3,6 +3,11 @@ package com.gateoftruth.oklibrary
 object OkSimpleConstant {
     const val DOWNLOAD_FILE = "downloadFile"
     const val GET = "GET"
+    const val METHOD = "METHOD"
+    const val HEAD = "HEAD"
+    const val DELETE = "DELETE"
+    const val PUT = "PUT"
+    const val PATCH = "PATCH"
     const val POST = "POST"
     const val POST_JSON = "postJson"
     const val GET_BITMAP = "getBitmap"
