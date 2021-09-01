@@ -1,6 +1,7 @@
 # OKsimple：简单易用，扩展性强，基于okhttp4.X版本和kotlin的网络请求框架。
 ### 目前实现的功能
 - get，post，postjson，表单提交等常规请求
+- 支持HEAD，DELETE，PATCH，PUT等其他http method
 - 支持同步异步请求
 - 强大的请求策略系统，支持定时请求，轮询请求，请求失败切换域名等等复杂操作
 - 多文件下载，支持进度监听，支持断点续传
