@@ -58,6 +58,10 @@ abstract class BitmapResultCallBack : ResultCallBack() {
         }
     }
 
+    override fun downloadProgressOnMainThread(url: String, total: Long, current: Long) {
+
+    }
+
     override fun uploadProgress(fileName: String, total: Long, current: Long) {
 
     }

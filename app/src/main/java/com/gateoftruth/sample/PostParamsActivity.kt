@@ -19,8 +19,8 @@ class PostParamsActivity : AppCompatActivity() {
             map["v"] = "1"
             map["month"] = "1"
             map["day"] = "1"
-            OkSimple.post("http://api.juheapi.com/japi/toh").post(map)
-                .params("key", "a4a8acd821a6412a361310249f085d96")
+            OkSimple.post("post url").post(map)
+                .params("key", "value")
                 .execute(object : GsonCallBack<ExampleBean>() {
                     override fun getData(
                         data: ExampleBean,

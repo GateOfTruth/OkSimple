@@ -54,7 +54,7 @@ abstract class BaseRequest(val url: String, val type: String) {
         return this
     }
 
-    internal fun prepare(callBack: ResultCallBack?): OkHttpClient {
+    internal fun prepare(callBack: ResultCallBack?) {
         appendParamsMapToUrl(OkSimple.globalParamsMap)
         for ((k, v) in OkSimple.globalHeaderMap) {
             requestBuilder.header(k, v)
@@ -84,17 +84,7 @@ abstract class BaseRequest(val url: String, val type: String) {
             }
 
             OkSimpleConstant.GET_BITMAP -> {
-                val bitmapBuilder = client.newBuilder()
-                val interceptors = bitmapBuilder.interceptors()
-                interceptors.add(0, Interceptor { chain ->
-                    val request = chain.request()
-                    val url = request.url.toString()
-                    val originalResponse = chain.proceed(request)
-                    val originalResponseBody = originalResponse.body
-                    if (originalResponseBody == null) originalResponse else originalResponse.newBuilder()
-                        .body(ProgressResponseBody(url, originalResponseBody, callBack)).build()
-                })
-                client = bitmapBuilder.build()
+                requestBuilder.get()
             }
 
             OkSimpleConstant.DOWNLOAD_FILE -> {
@@ -162,7 +152,6 @@ abstract class BaseRequest(val url: String, val type: String) {
             }
         }
 
-        return client
     }
 
     private fun appendParamsMapToUrl(map: Map<String, String>) {

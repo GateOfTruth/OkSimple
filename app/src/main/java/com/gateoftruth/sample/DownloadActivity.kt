@@ -11,8 +11,7 @@ import okhttp3.Call
 import java.io.File
 
 class DownloadActivity : AppCompatActivity() {
-    private val url =
-        "https://sqdd.myapp.com/myapp/qqteam/qq_hd/apad/qqhd_hd_5.8.8.3445_release.apk"
+    private val url = "your download url"
     private val name = "read.apk"
     private var path = ""
     override fun onCreate(savedInstanceState: Bundle?) {

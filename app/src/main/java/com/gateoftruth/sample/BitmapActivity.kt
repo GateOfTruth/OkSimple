@@ -13,18 +13,12 @@ class BitmapActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bitmap)
-        val url =
-            "https://images.pexels.com/photos/280249/pexels-photo-280249.jpeg?cs=srgb&dl=architecture-big-ben-black-and-white-280249.jpg&fm=jpg"
+        val url ="your bitmap url"
         OkSimple.getBitmap(url).execute(object : BitmapResultCallBack() {
             override fun finish(bitmap: Bitmap) {
                 iv_bitmap.setImageBitmap(bitmap)
 
             }
-
-            override fun downloadProgressOnMainThread(url: String, total: Long, current: Long) {
-                tv_bitmap_progress.text = "current:$current\t\ttotal:$total"
-            }
-
 
             override fun failure(call: Call, e: Exception) {
 

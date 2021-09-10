@@ -1,6 +1,7 @@
 package com.gateoftruth.oklibrary
 
 import android.app.Application
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -137,7 +138,17 @@ object OkSimple {
     }
 
     fun <G : GlideCallBack> getGlideClient(listener: G): OkHttpClient {
-        return getBitmap("").prepare(listener)
+        val bitmapBuilder = okHttpClient.newBuilder()
+        val interceptors = bitmapBuilder.interceptors()
+        interceptors.add(0, Interceptor { chain ->
+            val request = chain.request()
+            val url = request.url.toString()
+            val originalResponse = chain.proceed(request)
+            val originalResponseBody = originalResponse.body
+            if (originalResponseBody == null) originalResponse else originalResponse.newBuilder()
+                .body(ProgressResponseBody(url, originalResponseBody, listener)).build()
+        })
+        return bitmapBuilder.build()
     }
 
     internal fun strategyRequest(strategy: RequestStrategy) {

@@ -17,10 +17,10 @@ class GetActivity : AppCompatActivity() {
         val dialog =
             AlertDialog.Builder(this@GetActivity).setTitle("dialog").setMessage("request").create()
         OkSimple.addGlobalHeader("testGlobalHeader", "3")
-        OkSimple.get("http://api.juheapi.com/japi/toh").setRequestStrategy(ChangeHostStrategy())
-            .params("month", "1")
-            .params("day", "1")
-            .params("key", "a4a8acd821a6412a361310249f085d96").execute(object :
+        OkSimple.get("your get url").setRequestStrategy(ChangeHostStrategy())
+            .params("key", "value")
+            .params("key", "value")
+            .params("key", "value").execute(object :
                 GsonCallBack<ExampleBean>() {
                 override fun start() {
                     dialog.show()
