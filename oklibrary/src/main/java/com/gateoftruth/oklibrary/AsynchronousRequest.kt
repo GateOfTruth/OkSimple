@@ -23,7 +23,7 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
             }
         }
         if (type == OkSimpleConstant.DOWNLOAD_FILE) {
-            OkSimple.cachedThreadPool.execute {
+            OkSimple.okHttpClient.dispatcher.executorService.execute {
                 prepare(callBack)
                 process(localVar)
             }

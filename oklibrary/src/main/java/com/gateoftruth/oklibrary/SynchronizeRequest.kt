@@ -26,8 +26,8 @@ class SynchronizeRequest(url: String, type: String) : BaseRequest(url, type) {
             if (OkSimple.preventContinuousRequests) {
                 OkSimple.statusUrlMap.remove(tag)
             }
-            return resultBean
         }
+        return resultBean
     }
 
     private fun processSynchronize(): Response {

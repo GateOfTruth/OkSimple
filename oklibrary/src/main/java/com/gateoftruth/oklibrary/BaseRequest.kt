@@ -92,12 +92,14 @@ abstract class BaseRequest(val url: String, val type: String) {
                 val downloadLength = if (file.exists()) file.length() else 0
                 val downloadBean = DownloadBean()
                 var contentLength = 0L
+                var acceptRange: String? = null
                 downloadBean.url = requestUrl
                 try {
                     val headRequest = requestBuilder.url(requestUrl).head().build()
                     val downloadResponse =
                         client.newCall(headRequest).execute()
                     contentLength = downloadResponse.headersContentLength()
+                    acceptRange = downloadResponse.headers["accept-ranges"]
                     requestBuilder = headRequest.newBuilder().get()
                     downloadBean.contentLength = contentLength
                 } catch (e: IOException) {
@@ -109,7 +111,7 @@ abstract class BaseRequest(val url: String, val type: String) {
                 if (callBack != null) {
                     callBack.urlToBeanMap[requestUrl] = downloadBean
                 }
-                if (contentLength > 0) {
+                if (!acceptRange.isNullOrEmpty() && acceptRange != "none" && contentLength > 0) {
                     requestBuilder.addHeader("RANGE", "bytes=$downloadLength-$contentLength")
                 }
 
@@ -235,8 +237,7 @@ abstract class BaseRequest(val url: String, val type: String) {
 
     abstract fun execute(callBack: ResultCallBack)
 
-    abstract fun <T> execute(bean:BaseSynchronizeBean<T>?=null):BaseSynchronizeBean<T>
-
+    abstract fun <T> execute(bean: BaseSynchronizeBean<T>? = null): BaseSynchronizeBean<T>
 
 
 }

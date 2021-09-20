@@ -8,8 +8,6 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 object OkSimple {
     var okHttpClient = OkHttpClient()
@@ -27,8 +25,6 @@ object OkSimple {
     val statusUrlMap = ConcurrentHashMap<String, Boolean>()
 
     internal val tagStrategyMap = ConcurrentHashMap<String, RequestStrategy>()
-
-    val cachedThreadPool: ExecutorService = Executors.newCachedThreadPool()
 
     var networkAvailable = true
 
@@ -51,43 +47,43 @@ object OkSimple {
 
     fun get(url: String, isSync: Boolean = false): BaseRequest {
         return if (isSync) SynchronizeRequest(url, OkSimpleConstant.GET) else AsynchronousRequest(
-            url,
-            OkSimpleConstant.GET
+                url,
+                OkSimpleConstant.GET
         )
     }
 
     fun postJson(url: String, jsonObject: JSONObject, isSync: Boolean = false): BaseRequest {
         val request = if (isSync) SynchronizeRequest(
-            url,
-            OkSimpleConstant.POST_JSON
+                url,
+                OkSimpleConstant.POST_JSON
         ) else AsynchronousRequest(url, OkSimpleConstant.POST_JSON)
         request.postJson(jsonObject)
         return request
     }
 
     fun post(
-        url: String,
-        valueMap: Map<String, String> = HashMap(),
-        isSync: Boolean = false
+            url: String,
+            valueMap: Map<String, String> = HashMap(),
+            isSync: Boolean = false
     ): BaseRequest {
         val request =
-            if (isSync) SynchronizeRequest(url, OkSimpleConstant.POST) else AsynchronousRequest(
-                url,
-                OkSimpleConstant.POST
-            )
+                if (isSync) SynchronizeRequest(url, OkSimpleConstant.POST) else AsynchronousRequest(
+                        url,
+                        OkSimpleConstant.POST
+                )
         request.post(valueMap)
         return request
     }
 
     fun downloadFile(
-        url: String,
-        filename: String,
-        filePath: String,
-        isSync: Boolean = false
+            url: String,
+            filename: String,
+            filePath: String,
+            isSync: Boolean = false
     ): BaseRequest {
         val request = if (isSync) SynchronizeRequest(
-            url,
-            OkSimpleConstant.DOWNLOAD_FILE
+                url,
+                OkSimpleConstant.DOWNLOAD_FILE
         ) else AsynchronousRequest(url, OkSimpleConstant.DOWNLOAD_FILE)
         request.fileName = filename
         request.filePath = filePath
@@ -96,19 +92,19 @@ object OkSimple {
 
     fun getBitmap(url: String, isSync: Boolean = false): BaseRequest {
         return if (isSync) SynchronizeRequest(
-            url,
-            OkSimpleConstant.GET_BITMAP
+                url,
+                OkSimpleConstant.GET_BITMAP
         ) else AsynchronousRequest(url, OkSimpleConstant.GET_BITMAP)
     }
 
     fun uploadFile(
-        url: String,
-        file: File,
-        mediaType: String = OkSimpleConstant.STREAM_MEDIA_TYPE_STRING, isSync: Boolean = false
+            url: String,
+            file: File,
+            mediaType: String = OkSimpleConstant.STREAM_MEDIA_TYPE_STRING, isSync: Boolean = false
     ): BaseRequest {
         val request = if (isSync) SynchronizeRequest(
-            url,
-            OkSimpleConstant.UPLOAD_FILE
+                url,
+                OkSimpleConstant.UPLOAD_FILE
         ) else AsynchronousRequest(url, OkSimpleConstant.UPLOAD_FILE)
         request.uploadFile(file)
         request.defaultFileMediaType = mediaType.toMediaType()
@@ -117,22 +113,22 @@ object OkSimple {
 
     fun postForm(url: String, isSync: Boolean = false): BaseRequest {
         return if (isSync) SynchronizeRequest(
-            url,
-            OkSimpleConstant.POST_FORM
+                url,
+                OkSimpleConstant.POST_FORM
         ) else AsynchronousRequest(url, OkSimpleConstant.POST_FORM)
     }
 
     fun method(
-        url: String,
-        methodName: String,
-        requestBody: RequestBody? = null,
-        isSync: Boolean = false
+            url: String,
+            methodName: String,
+            requestBody: RequestBody? = null,
+            isSync: Boolean = false
     ): BaseRequest {
         val request =
-            if (isSync) SynchronizeRequest(url, OkSimpleConstant.METHOD) else AsynchronousRequest(
-                url,
-                OkSimpleConstant.METHOD
-            )
+                if (isSync) SynchronizeRequest(url, OkSimpleConstant.METHOD) else AsynchronousRequest(
+                        url,
+                        OkSimpleConstant.METHOD
+                )
         request.method(methodName, requestBody)
         return request
     }
@@ -146,7 +142,7 @@ object OkSimple {
             val originalResponse = chain.proceed(request)
             val originalResponseBody = originalResponse.body
             if (originalResponseBody == null) originalResponse else originalResponse.newBuilder()
-                .body(ProgressResponseBody(url, originalResponseBody, listener)).build()
+                    .body(ProgressResponseBody(url, originalResponseBody, listener)).build()
         })
         return bitmapBuilder.build()
     }
