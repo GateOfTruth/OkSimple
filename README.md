@@ -36,9 +36,21 @@ allprojects {
     }
 }
 ```
+## 注意，如果你使用的是新版的Android studio，你还需要在settings.gradle中进行配置
+```
+dependencyResolutionManagement {
+   //
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+//
+```
 然后在app的build.gradle
 ```
-implementation 'com.github.GateOfTruth:OkSimple:3.1.4'
+implementation 'com.github.GateOfTruth:OkSimple:3.2.0'
 ```
 ##### 或者你也可以fork一下，自己编译，oksimple只依赖了okhttp，没有其他依赖，编译出来的aar包也只有30几KB，同时，Oksimple采用api引入okhttp，所以你引入了oksimple的话，就不用重新引入okhttp了。
 
