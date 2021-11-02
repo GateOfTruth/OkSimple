@@ -20,7 +20,7 @@ object OkSimple {
 
     val globalParamsMap = hashMapOf<String, String>()
 
-    var preventContinuousRequests = true
+    var preventContinuousRequests = false
 
     var networkUnavailableForceCache = true
 
