@@ -44,11 +44,11 @@ class PostParamsActivity : AppCompatActivity() {
         }
 
         btn_without_map.setOnClickListener {
-            OkSimple.post("http://api.juheapi.com/japi/toh")
+            OkSimple.post("your url")
                 .post("v", "1")
                 .post("month", "1")
                 .post("day", "1")
-                .post("key", "a4a8acd821a6412a361310249f085d96").execute(object :
+                .post("key", "value").execute(object :
                     GsonCallBack<ExampleBean>() {
                     override fun getData(
                         data: ExampleBean,

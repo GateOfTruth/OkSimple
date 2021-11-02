@@ -7,7 +7,9 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import org.json.JSONObject
 import java.io.File
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.collections.HashMap
 
 object OkSimple {
     var okHttpClient = OkHttpClient()
@@ -22,7 +24,7 @@ object OkSimple {
 
     var networkUnavailableForceCache = true
 
-    val statusUrlMap = ConcurrentHashMap<String, Boolean>()
+    internal val statusSet = Collections.newSetFromMap(ConcurrentHashMap<RequestObject, Boolean>())
 
     internal val tagStrategyMap = ConcurrentHashMap<String, RequestStrategy>()
 
@@ -167,14 +169,11 @@ object OkSimple {
             it.request().tag().toString() == tag
         }
         queuedCall?.cancel()
-
-
-        statusUrlMap.remove(tag)
     }
 
     fun cancelAll() {
         okHttpClient.dispatcher.cancelAll()
-        statusUrlMap.clear()
+        statusSet.clear()
         mainHandler.removeMessages(OkSimpleConstant.STRATEGY_MESSAGE)
     }
 

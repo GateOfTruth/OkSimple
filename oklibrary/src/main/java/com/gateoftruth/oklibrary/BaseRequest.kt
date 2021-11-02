@@ -237,7 +237,7 @@ abstract class BaseRequest(val url: String, val type: String) {
 
     abstract fun execute(callBack: ResultCallBack)
 
-    abstract fun <T> execute(bean: BaseSynchronizeBean<T>? = null): BaseSynchronizeBean<T>
+    abstract fun <T> execute(bean: BaseSynchronizeBean<T>): BaseSynchronizeBean<T>
 
 
 }

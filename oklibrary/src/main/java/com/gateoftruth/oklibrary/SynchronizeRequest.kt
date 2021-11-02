@@ -1,44 +1,49 @@
 package com.gateoftruth.oklibrary
 
 import okhttp3.CacheControl
+import okhttp3.Request
 import okhttp3.Response
 
 class SynchronizeRequest(url: String, type: String) : BaseRequest(url, type) {
 
-    override fun <T> execute(bean: BaseSynchronizeBean<T>?): BaseSynchronizeBean<T> {
-        val resultBean = bean ?: NormalSynchronizeBean()
+    lateinit var requestObject:RequestObject
+    override fun <T> execute(bean: BaseSynchronizeBean<T>): BaseSynchronizeBean<T> {
         try {
+            val cache = requestCacheControl
+            requestBuilder.url(requestUrl).tag(tag)
+            if (cache != null) {
+                requestBuilder.cacheControl(cache)
+            } else if (OkSimple.networkUnavailableForceCache && !OksimpleNetworkUtil.isNetworkAvailable()) {
+                requestBuilder.cacheControl(CacheControl.FORCE_CACHE)
+            }
+            prepare(null)
+            val finalRequest=requestBuilder.build()
+            requestObject = RequestObject(tag, finalRequest.body?.contentLength() ?: -1L)
             if (OkSimple.preventContinuousRequests) {
-                val status = OkSimple.statusUrlMap[tag] ?: false
-                if (status) {
-                    resultBean.exception =
-                        RuntimeException("The request has been intercepted because it is a duplicate request")
-                } else {
-                    OkSimple.statusUrlMap[tag] = true
-                    prepare(null)
-                    resultBean.response = processSynchronize()
+                val hasSameRequest = OkSimple.statusSet.contains(requestObject)
+                if (hasSameRequest){
+                    bean.exception =
+                        RuntimeException("${OkSimpleConstant.OKSIMPLE_TAG}:Same Request!!! This request has been abandoned!!!")
+                }else{
+                    OkSimple.statusSet.add(requestObject)
+                    bean.response = processSynchronize(finalRequest)
                 }
+            }else{
+                bean.response = processSynchronize(finalRequest)
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            resultBean.exception = e
+            bean.exception = e
         } finally {
             if (OkSimple.preventContinuousRequests) {
-                OkSimple.statusUrlMap.remove(tag)
+                OkSimple.statusSet.remove(requestObject)
             }
         }
-        return resultBean
+        return bean
     }
 
-    private fun processSynchronize(): Response {
-        val cache = requestCacheControl
-        requestBuilder.url(requestUrl).tag(tag)
-        if (cache != null) {
-            requestBuilder.cacheControl(cache)
-        } else if (OkSimple.networkUnavailableForceCache && !OksimpleNetworkUtil.isNetworkAvailable()) {
-            requestBuilder.cacheControl(CacheControl.FORCE_CACHE)
-        }
-        return client.newCall(requestBuilder.build()).execute()
+    private fun processSynchronize(finalRequest:Request): Response {
+        return client.newCall(finalRequest).execute()
     }
 
 

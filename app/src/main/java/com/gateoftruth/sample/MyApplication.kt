@@ -17,13 +17,14 @@ class MyApplication : Application() {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         OkSimple.okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor)
-            .connectTimeout(100, TimeUnit.SECONDS)
-            .writeTimeout(100, TimeUnit.SECONDS)
-            .readTimeout(100, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
             .cache(Cache(cacheDir, 1024L * 1024 * 10))
             .build()
         OkSimple.addGlobalParams("globeparams", "1")
         OkSimple.application = this
+        OkSimple.preventContinuousRequests = true
         /*
         replace by your global params and global header
          */

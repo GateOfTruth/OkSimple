@@ -1,9 +1,10 @@
 package com.gateoftruth.oklibrary
 
+import android.util.Log
 import okhttp3.*
 import java.io.IOException
 
-class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
+class AsynchronousRequest(url: String, type: String) : BaseRequest(url, type) {
 
     override fun execute(callBack: ResultCallBack) {
         var localVar = requestStrategy
@@ -11,17 +12,6 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
             localVar = DefaultStrategy()
         }
         localVar.strategyResultCallBack = callBack
-        if (localVar.callBackStart()) {
-            callBack.start()
-        }
-        if (OkSimple.preventContinuousRequests) {
-            val status = OkSimple.statusUrlMap[tag] ?: false
-            if (status) {
-                return
-            } else {
-                OkSimple.statusUrlMap[tag] = true
-            }
-        }
         if (type == OkSimpleConstant.DOWNLOAD_FILE) {
             OkSimple.okHttpClient.dispatcher.executorService.execute {
                 prepare(callBack)
@@ -45,14 +35,30 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
             localTag = tag
             val cache = requestCacheControl
             requestBuilder.url(requestUrl).tag(localTag)
-            if (cache!=null){
+            if (cache != null) {
                 requestBuilder.cacheControl(cache)
-            }else if (OkSimple.networkUnavailableForceCache && !OksimpleNetworkUtil.isNetworkAvailable()){
+            } else if (OkSimple.networkUnavailableForceCache && !OksimpleNetworkUtil.isNetworkAvailable()) {
                 requestBuilder.cacheControl(CacheControl.FORCE_CACHE)
             }
             localRequestBuilder = requestBuilder
         }
         val finalRequest = strategy.getRequestBuilder(localRequestBuilder).build()
+        val requestObject = RequestObject(localTag, finalRequest.body?.contentLength() ?: -1L)
+        if (OkSimple.preventContinuousRequests) {
+            val hasSameRequest = OkSimple.statusSet.contains(requestObject)
+            if (hasSameRequest) {
+                Log.e(
+                    OkSimpleConstant.OKSIMPLE_TAG,
+                    "Same Request!!! This request has been abandoned!!!"
+                )
+                return
+            } else {
+                OkSimple.statusSet.add(requestObject)
+            }
+        }
+        if (strategy.callBackStart()) {
+            callBack?.start()
+        }
         strategy.count++
         client.newCall(finalRequest).enqueue((object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -62,7 +68,7 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
                     }
                 }
                 if (OkSimple.preventContinuousRequests) {
-                    OkSimple.statusUrlMap.remove(localTag)
+                    OkSimple.statusSet.remove(requestObject)
                 }
                 if (strategy.requestAgainOnFailure(call, e)) {
                     strategy.strategyCall = call
@@ -79,7 +85,7 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
                     callBack?.response(call, response)
                 }
                 if (OkSimple.preventContinuousRequests) {
-                    OkSimple.statusUrlMap.remove(localTag)
+                    OkSimple.statusSet.remove(requestObject)
                 }
                 if (strategy.requestAgainOnResponse(call, response)) {
                     strategy.strategyCall = call
@@ -100,7 +106,7 @@ class AsynchronousRequest(url: String, type: String) :BaseRequest(url, type) {
         OkSimple.mainHandler.sendMessageDelayed(message, requestStrategy.requestDelay())
     }
 
-    override fun <T> execute(bean: BaseSynchronizeBean<T>?): BaseSynchronizeBean<T> {
+    override fun <T> execute(bean: BaseSynchronizeBean<T>): BaseSynchronizeBean<T> {
         return NormalSynchronizeBean()
     }
 }

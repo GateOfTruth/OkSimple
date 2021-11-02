@@ -16,4 +16,5 @@ object OkSimpleConstant {
     const val STREAM_MEDIA_TYPE_STRING = "application/octet-stream"
     const val JSON_MEDIA_TYPE_STRING = "application/json"
     const val STRATEGY_MESSAGE = 0x45786
+    const val OKSIMPLE_TAG = "OksimpleLibrary"
 }
