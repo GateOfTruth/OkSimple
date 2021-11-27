@@ -3,14 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 group = "com.github.GateOfTruth"
 
-def vName="3.3.1"
+def vName="3.3.2"
 android {
     compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 42
+        versionCode 43
         versionName vName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

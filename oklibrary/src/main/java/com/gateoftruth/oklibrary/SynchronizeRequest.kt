@@ -6,7 +6,7 @@ import okhttp3.Response
 
 class SynchronizeRequest(url: String, type: String) : BaseRequest(url, type) {
 
-    lateinit var requestObject:RequestObject
+    lateinit var requestObject: RequestObject
     override fun <T> execute(bean: BaseSynchronizeBean<T>): BaseSynchronizeBean<T> {
         try {
             val cache = requestCacheControl
@@ -17,18 +17,19 @@ class SynchronizeRequest(url: String, type: String) : BaseRequest(url, type) {
                 requestBuilder.cacheControl(CacheControl.FORCE_CACHE)
             }
             prepare(null)
-            val finalRequest=requestBuilder.build()
-            requestObject = RequestObject(tag, finalRequest.body?.contentLength() ?: -1L)
-            if (OkSimple.preventContinuousRequests) {
+            val finalRequest = requestBuilder.build()
+            requestObject =
+                RequestObject(tag, contentString, finalRequest.body?.contentLength() ?: -1L)
+            if (OkSimple.preventContinuousRequests && !specialRequest) {
                 val hasSameRequest = OkSimple.statusSet.contains(requestObject)
-                if (hasSameRequest){
+                if (hasSameRequest) {
                     bean.exception =
-                        RuntimeException("${OkSimpleConstant.OKSIMPLE_TAG}:Same Request!!! This request has been abandoned!!!")
-                }else{
+                        RuntimeException("${OkSimpleConstant.OKSIMPLE_TAG}:Same Request!!! This request has been abandoned!!!,${requestObject}")
+                } else {
                     OkSimple.statusSet.add(requestObject)
                     bean.response = processSynchronize(finalRequest)
                 }
-            }else{
+            } else {
                 bean.response = processSynchronize(finalRequest)
             }
         } catch (e: Exception) {
@@ -42,7 +43,7 @@ class SynchronizeRequest(url: String, type: String) : BaseRequest(url, type) {
         return bean
     }
 
-    private fun processSynchronize(finalRequest:Request): Response {
+    private fun processSynchronize(finalRequest: Request): Response {
         return client.newCall(finalRequest).execute()
     }
 

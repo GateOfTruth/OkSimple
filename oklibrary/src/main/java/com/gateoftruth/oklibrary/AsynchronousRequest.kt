@@ -43,14 +43,12 @@ class AsynchronousRequest(url: String, type: String) : BaseRequest(url, type) {
             localRequestBuilder = requestBuilder
         }
         val finalRequest = strategy.getRequestBuilder(localRequestBuilder).build()
-        val requestObject = RequestObject(localTag, finalRequest.body?.contentLength() ?: -1L)
-        if (OkSimple.preventContinuousRequests) {
+        val requestObject =
+            RequestObject(localTag, contentString, finalRequest.body?.contentLength() ?: -1L)
+        if (OkSimple.preventContinuousRequests && !specialRequest) {
             val hasSameRequest = OkSimple.statusSet.contains(requestObject)
             if (hasSameRequest) {
-                Log.e(
-                    OkSimpleConstant.OKSIMPLE_TAG,
-                    "Same Request!!! This request has been abandoned!!!"
-                )
+                callBack?.requestAbandon(finalRequest,requestObject)
                 return
             } else {
                 OkSimple.statusSet.add(requestObject)

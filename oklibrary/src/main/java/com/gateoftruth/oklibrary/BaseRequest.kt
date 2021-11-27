@@ -48,6 +48,10 @@ abstract class BaseRequest(val url: String, val type: String) {
 
     protected var methodRequestBody: RequestBody? = null
 
+    protected var contentString = ""
+
+    protected var specialRequest = false
+
 
     fun setRequestStrategy(requestStrategy: RequestStrategy): BaseRequest {
         this.requestStrategy = requestStrategy
@@ -63,27 +67,36 @@ abstract class BaseRequest(val url: String, val type: String) {
         when (type) {
 
             OkSimpleConstant.GET -> {
+                contentString = "type:get;"
                 requestBuilder.get()
             }
 
             OkSimpleConstant.POST -> {
                 val formBody = FormBody.Builder()
+                val stringBuilder = StringBuilder()
+                stringBuilder.append("type:post;")
                 for ((k, v) in postParamsMap) {
                     formBody.add(k, v)
+                    stringBuilder.append(k)
+                    stringBuilder.append("=")
+                    stringBuilder.append(v)
                 }
+                contentString = stringBuilder.toString()
                 requestBuilder.post(formBody.build())
 
             }
 
             OkSimpleConstant.POST_JSON -> {
+                val jsonString = postJSONObject.toString()
                 val requestBody =
-                    postJSONObject.toString()
-                        .toRequestBody(OkSimpleConstant.JSON_MEDIA_TYPE_STRING.toMediaType())
+                    jsonString.toRequestBody(OkSimpleConstant.JSON_MEDIA_TYPE_STRING.toMediaType())
+                contentString = "type:POST_JSON;$jsonString"
                 requestBuilder.post(requestBody)
 
             }
 
             OkSimpleConstant.GET_BITMAP -> {
+                contentString = "type:GET_BITMAP;"
                 requestBuilder.get()
             }
 
@@ -114,10 +127,11 @@ abstract class BaseRequest(val url: String, val type: String) {
                 if (!acceptRange.isNullOrEmpty() && acceptRange != "none" && contentLength > 0) {
                     requestBuilder.addHeader("RANGE", "bytes=$downloadLength-$contentLength")
                 }
-
+                contentString = "type:DOWNLOAD_FILE;"
             }
 
             OkSimpleConstant.UPLOAD_FILE -> {
+                contentString = "type:UPLOAD_FILE;${uploadFile.name}"
                 requestBuilder.post(
                     ProgressRequestBody(
                         uploadFile.name,
@@ -128,14 +142,23 @@ abstract class BaseRequest(val url: String, val type: String) {
             }
 
             OkSimpleConstant.POST_FORM -> {
+                val stringBuilder = StringBuilder()
+                stringBuilder.append("type:POST_FORM;")
                 val multipartBodyBuilder = MultipartBody.Builder()
                 multipartBodyBuilder.setType(MultipartBody.FORM)
                 for ((k, v) in formParamsMap) {
+                    stringBuilder.append(k)
+                    stringBuilder.append("=")
+                    stringBuilder.append(v)
                     multipartBodyBuilder.addFormDataPart(k, v)
                 }
+                stringBuilder.append(";")
                 formFileKeyList.forEachIndexed { index, s ->
                     val file = formFileList[index]
                     val fileName = file.name
+                    stringBuilder.append("POST_FORM File Name=")
+                    stringBuilder.append(file.name)
+                    stringBuilder.append(";")
                     multipartBodyBuilder.addFormDataPart(
                         s,
                         fileName,
@@ -146,10 +169,12 @@ abstract class BaseRequest(val url: String, val type: String) {
                         )
                     )
                 }
+                contentString = stringBuilder.toString()
                 requestBuilder.post(multipartBodyBuilder.build())
             }
 
             OkSimpleConstant.METHOD -> {
+                specialRequest = true
                 requestBuilder.method(methodName, methodRequestBody)
             }
         }
@@ -187,16 +212,11 @@ abstract class BaseRequest(val url: String, val type: String) {
         requestBuilder.header(key, value)
     }
 
-    /**
-     * always append to url
-     */
     fun params(key: String, value: String) = apply {
         paramsMap[key] = value
     }
 
-    /**
-     * only in post body
-     */
+
     fun post(key: String, value: String) = apply {
         postParamsMap[key] = value
     }

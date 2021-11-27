@@ -68,7 +68,7 @@ abstract class DataCallBack<E> : ResultCallBack() {
     }
 
     override fun responseBodyGetNull(call: Call, response: Response) {
-        failure(call,RuntimeException("responseBodyGetNull"))
+        failure(call, RuntimeException("responseBodyGetNull"))
     }
 
 

@@ -47,6 +47,6 @@ class GetActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        OkSimple.cancelCall("http://api.juheapi.com/japi/toh")
+        OkSimple.cancelCall("")
     }
 }
