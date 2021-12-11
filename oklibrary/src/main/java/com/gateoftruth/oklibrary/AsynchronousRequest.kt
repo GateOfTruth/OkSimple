@@ -1,6 +1,5 @@
 package com.gateoftruth.oklibrary
 
-import android.util.Log
 import okhttp3.*
 import java.io.IOException
 
@@ -48,7 +47,7 @@ class AsynchronousRequest(url: String, type: String) : BaseRequest(url, type) {
         if (OkSimple.preventContinuousRequests && !specialRequest) {
             val hasSameRequest = OkSimple.statusSet.contains(requestObject)
             if (hasSameRequest) {
-                callBack?.requestAbandon(finalRequest,requestObject)
+                callBack?.requestAbandon(finalRequest, requestObject)
                 return
             } else {
                 OkSimple.statusSet.add(requestObject)

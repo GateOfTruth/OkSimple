@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory
 import okhttp3.Call
 import okhttp3.Response
 
-abstract class BitmapResultCallBack : ResultCallBack() {
+abstract class BitmapResultCallBack(private val isMainThread: Boolean = true) : ResultCallBack() {
 
     override fun start() {
 
@@ -14,30 +14,50 @@ abstract class BitmapResultCallBack : ResultCallBack() {
     override fun response(call: Call, response: Response) {
         val responseBody = response.body
         if (responseBody == null) {
-            responseBodyGetNull(call, response)
+            if (isMainThread) {
+                OkSimple.mainHandler.post {
+                    responseBodyGetNull(call, response)
+                }
+            } else {
+                responseBodyGetNull(call, response)
+            }
             return
         }
         try {
             val inputStream = responseBody.byteStream()
             val bitmap = BitmapFactory.decodeStream(inputStream)
-            OkSimple.mainHandler.post {
-                if (bitmap == null) {
-                    otherException(
-                        call,
-                        response,
-                        IllegalArgumentException("BitmapFactory.decodeStream() function get null")
-                    )
-                } else {
-                    finish(bitmap)
+            if (isMainThread) {
+                OkSimple.mainHandler.post {
+                    returnTheBitmap(bitmap, call, response)
                 }
+            } else {
+                returnTheBitmap(bitmap, call, response)
             }
+
         } catch (e: Exception) {
-            OkSimple.mainHandler.post {
+            if (isMainThread) {
+                OkSimple.mainHandler.post {
+                    otherException(call, response, e)
+                }
+            } else {
                 otherException(call, response, e)
             }
+
         }
 
 
+    }
+
+    open fun returnTheBitmap(bitmap: Bitmap?, call: Call, response: Response) {
+        if (bitmap == null) {
+            otherException(
+                call,
+                response,
+                IllegalArgumentException("BitmapFactory.decodeStream() function get null")
+            )
+        } else {
+            finish(bitmap)
+        }
     }
 
     override fun otherException(call: Call, response: Response, e: Exception) {

@@ -19,7 +19,7 @@ abstract class ResultCallBack : BaseProgressListener {
 
     abstract fun otherException(call: Call, response: Response, e: Exception)
 
-    open fun requestAbandon(request:Request,requestObject: RequestObject){
+    open fun requestAbandon(request: Request, requestObject: RequestObject) {
         Log.e(
             OkSimpleConstant.OKSIMPLE_TAG,
             "Same Request!!! This request has been abandoned!!!,detail:$requestObject"

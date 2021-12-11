@@ -4,7 +4,7 @@ import okhttp3.Call
 import okhttp3.Response
 
 
-abstract class DataCallBack<E> : ResultCallBack() {
+abstract class DataCallBack<E>(private val isMainThread: Boolean = true) : ResultCallBack() {
 
     override fun start() {
 
@@ -13,30 +13,48 @@ abstract class DataCallBack<E> : ResultCallBack() {
     override fun response(call: Call, response: Response) {
         val responseBody = response.body
         if (responseBody == null) {
-            responseBodyGetNull(call, response)
+            if (isMainThread) {
+                OkSimple.mainHandler.post {
+                    responseBodyGetNull(call, response)
+                }
+            } else {
+                responseBodyGetNull(call, response)
+            }
             return
         }
         try {
             val rawString = responseBody.string()
             val data = stringToData(preProcessBodyString(rawString))
-            OkSimple.mainHandler.post {
-                if (data != null) {
-                    getData(data, rawString, call, response)
-                } else {
-                    otherException(
-                        call,
-                        response,
-                        IllegalArgumentException("stringToData() function get null")
-                    )
+            if (isMainThread) {
+                OkSimple.mainHandler.post {
+                    returnTheData(data, rawString, call, response)
                 }
-
+            } else {
+                returnTheData(data, rawString, call, response)
             }
         } catch (e: Exception) {
-            OkSimple.mainHandler.post {
+            if (isMainThread) {
+                OkSimple.mainHandler.post {
+                    otherException(call, response, e)
+                }
+            } else {
                 otherException(call, response, e)
             }
+
         }
 
+    }
+
+    open fun returnTheData(data: E, rawString: String, call: Call, response: Response) {
+        if (data != null) {
+            getData(data, rawString, call, response)
+        } else {
+            otherException(
+                call,
+                response,
+                IllegalArgumentException("stringToData() function get null")
+            )
+        }
     }
 
     abstract fun stringToData(string: String): E

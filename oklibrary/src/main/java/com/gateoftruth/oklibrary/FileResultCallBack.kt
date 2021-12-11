@@ -7,7 +7,7 @@ import java.io.IOException
 import java.io.RandomAccessFile
 
 
-abstract class FileResultCallBack :
+abstract class FileResultCallBack(private val isMainThread: Boolean = true) :
     ResultCallBack() {
 
 
@@ -19,7 +19,13 @@ abstract class FileResultCallBack :
     override fun response(call: Call, response: Response) {
         val responseBody = response.body
         if (responseBody == null) {
-            responseBodyGetNull(call, response)
+            if (isMainThread) {
+                OkSimple.mainHandler.post {
+                    responseBodyGetNull(call, response)
+                }
+            } else {
+                responseBodyGetNull(call, response)
+            }
             return
         }
         try {
@@ -41,17 +47,31 @@ abstract class FileResultCallBack :
                 }
             }
             randomAccessFile.close()
-            OkSimple.mainHandler.post {
-                if (!file.exists() || file.length() == 0L) {
-                    otherException(call, response, IOException("File Download Failure"))
-                } else {
-                    finish(file)
+            if (isMainThread) {
+                OkSimple.mainHandler.post {
+                    returnTheFile(file, call, response)
                 }
+            } else {
+                returnTheFile(file, call, response)
             }
+
         } catch (e: Exception) {
-            OkSimple.mainHandler.post {
+            if (isMainThread) {
+                OkSimple.mainHandler.post {
+                    otherException(call, response, e)
+                }
+            } else {
                 otherException(call, response, e)
             }
+
+        }
+    }
+
+    open fun returnTheFile(file: File, call: Call, response: Response) {
+        if (!file.exists() || file.length() == 0L) {
+            otherException(call, response, IOException("File Download Failure"))
+        } else {
+            finish(file)
         }
     }
 
