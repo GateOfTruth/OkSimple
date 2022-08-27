@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        >
         <activity android:name=".MethodActivity" />
         <activity android:name=".SynchronizeRequestActivity" />
         <activity android:name=".MultipleDownloadActivity" />
@@ -25,7 +25,8 @@
         <activity android:name=".PostJsonActivity" />
         <activity android:name=".GetActivity" />
         <activity android:name=".DownloadActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
