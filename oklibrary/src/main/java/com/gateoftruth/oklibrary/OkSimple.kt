@@ -5,6 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.util.*
@@ -60,6 +61,15 @@ object OkSimple {
             OkSimpleConstant.POST_JSON
         ) else AsynchronousRequest(url, OkSimpleConstant.POST_JSON)
         request.postJson(jsonObject)
+        return request
+    }
+
+    fun postJson(url: String, jsonArray: JSONArray, isSync: Boolean = false): BaseRequest {
+        val request = if (isSync) SynchronizeRequest(
+            url,
+            OkSimpleConstant.POST_JSON_ARRAY
+        ) else AsynchronousRequest(url, OkSimpleConstant.POST_JSON_ARRAY)
+        request.postJsonArray(jsonArray)
         return request
     }
 

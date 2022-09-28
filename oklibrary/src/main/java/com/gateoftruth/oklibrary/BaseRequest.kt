@@ -5,6 +5,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.internal.headersContentLength
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
@@ -33,6 +34,8 @@ abstract class BaseRequest(val url: String, val type: String) {
     protected var requestBuilder = Request.Builder()
 
     protected var postJSONObject = JSONObject()
+
+    protected var postJSONArray = JSONArray()
 
     protected lateinit var uploadFile: File
 
@@ -87,12 +90,11 @@ abstract class BaseRequest(val url: String, val type: String) {
             }
 
             OkSimpleConstant.POST_JSON -> {
-                val jsonString = postJSONObject.toString()
-                val requestBody =
-                    jsonString.toRequestBody(OkSimpleConstant.JSON_MEDIA_TYPE_STRING.toMediaType())
-                contentString = "type:POST_JSON;$jsonString"
-                requestBuilder.post(requestBody)
+                stringPost(postJSONObject.toString(),OkSimpleConstant.POST_JSON)
+            }
 
+            OkSimpleConstant.POST_JSON_ARRAY -> {
+                stringPost(postJSONArray.toString(),OkSimpleConstant.POST_JSON_ARRAY)
             }
 
             OkSimpleConstant.GET_BITMAP -> {
@@ -181,6 +183,12 @@ abstract class BaseRequest(val url: String, val type: String) {
 
     }
 
+    private fun stringPost(string: String,type:String){
+        val requestBody = string.toRequestBody(OkSimpleConstant.JSON_MEDIA_TYPE_STRING.toMediaType())
+        contentString = "type:$type;$string"
+        requestBuilder.post(requestBody)
+    }
+
     private fun appendParamsMapToUrl(map: Map<String, String>) {
         val stringBuilder = StringBuilder()
         stringBuilder.append(requestUrl)
@@ -229,6 +237,10 @@ abstract class BaseRequest(val url: String, val type: String) {
 
     fun postJson(jsonObject: JSONObject) = apply {
         postJSONObject = jsonObject
+    }
+
+    fun postJsonArray(jsonArray: JSONArray) = apply {
+        postJSONArray = jsonArray
     }
 
     fun uploadFile(file: File) = apply {

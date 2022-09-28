@@ -10,6 +10,7 @@ object OkSimpleConstant {
     const val PATCH = "PATCH"
     const val POST = "POST"
     const val POST_JSON = "postJson"
+    const val POST_JSON_ARRAY = "postJsonArray"
     const val GET_BITMAP = "getBitmap"
     const val UPLOAD_FILE = "uploadFile"
     const val POST_FORM = "postForm"
