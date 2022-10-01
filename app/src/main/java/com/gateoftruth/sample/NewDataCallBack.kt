@@ -2,10 +2,9 @@ package com.gateoftruth.oklibrary
 
 import okhttp3.Call
 import okhttp3.Response
+import java.net.ConnectException
 
-
-abstract class DataCallBack<E>(private val isMainThread: Boolean = false) : ResultCallBack() {
-
+abstract class NewDataCallBack<E>(private val isMainThread: Boolean = true) : ResultCallBack() {
     override fun start() {
 
     }
@@ -22,9 +21,9 @@ abstract class DataCallBack<E>(private val isMainThread: Boolean = false) : Resu
             }
             return
         }
-        try {
+        if (response.code == 200) {
             val rawString = responseBody.string()
-            val data = stringToData(preProcessBodyString(rawString))
+            val data = stringToData(rawString)
             if (isMainThread) {
                 OkSimple.mainHandler.post {
                     returnTheData(data, rawString, call, response)
@@ -32,17 +31,9 @@ abstract class DataCallBack<E>(private val isMainThread: Boolean = false) : Resu
             } else {
                 returnTheData(data, rawString, call, response)
             }
-        } catch (e: Exception) {
-            if (isMainThread) {
-                OkSimple.mainHandler.post {
-                    otherException(call, response, e)
-                }
-            } else {
-                otherException(call, response, e)
-            }
-
+        } else {
+            otherException(call, response, Exception("2000"))
         }
-
     }
 
     open fun returnTheData(data: E?, rawString: String, call: Call, response: Response) {
@@ -52,19 +43,17 @@ abstract class DataCallBack<E>(private val isMainThread: Boolean = false) : Resu
             otherException(
                 call,
                 response,
-                IllegalArgumentException("stringToData() function get null")
+                Exception("2001")
             )
         }
     }
 
     abstract fun stringToData(string: String): E?
 
-    open fun preProcessBodyString(bodyString: String): String {
-        return bodyString
-    }
+    abstract fun getData(data: E, rawBodyString: String, call: Call, response: Response)
 
-    override fun otherException(call: Call, response: Response, e: Exception) {
-        failure(call, e)
+    override fun responseBodyGetNull(call: Call, response: Response) {
+
     }
 
     override fun downloadProgress(url: String, total: Long, current: Long) {
@@ -76,21 +65,11 @@ abstract class DataCallBack<E>(private val isMainThread: Boolean = false) : Resu
     }
 
     override fun uploadProgress(fileName: String, total: Long, current: Long) {
-        OkSimple.mainHandler.post {
-            uploadProgressOnMainThread(fileName, total, current)
-        }
+
     }
 
     override fun uploadProgressOnMainThread(fileName: String, total: Long, current: Long) {
 
     }
-
-    override fun responseBodyGetNull(call: Call, response: Response) {
-        failure(call, RuntimeException("responseBodyGetNull"))
-    }
-
-
-    abstract fun getData(data: E, rawBodyString: String, call: Call, response: Response)
-
 
 }
