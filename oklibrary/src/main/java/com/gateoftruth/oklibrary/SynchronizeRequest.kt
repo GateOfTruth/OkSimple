@@ -10,13 +10,13 @@ class SynchronizeRequest(url: String, type: String) : BaseRequest(url, type) {
     override fun <T> execute(bean: BaseSynchronizeBean<T>): BaseSynchronizeBean<T> {
         try {
             val cache = requestCacheControl
-            requestBuilder.url(requestUrl).tag(tag)
             if (cache != null) {
                 requestBuilder.cacheControl(cache)
             } else if (OkSimple.networkUnavailableForceCache && !OksimpleNetworkUtil.isNetworkAvailable()) {
                 requestBuilder.cacheControl(CacheControl.FORCE_CACHE)
             }
             prepare(null)
+            requestBuilder.url(requestUrl).tag(tag)
             val finalRequest = requestBuilder.build()
             requestObject =
                 RequestObject(tag, contentString, finalRequest.body?.contentLength() ?: -1L)
