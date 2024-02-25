@@ -6,28 +6,33 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gateoftruth.oklibrary.FileResultCallBack
 import com.gateoftruth.oklibrary.OkSimple
-import kotlinx.android.synthetic.main.activity_download.*
+import com.gateoftruth.sample.databinding.ActivityDownloadBinding
 import okhttp3.Call
 import java.io.File
 
 class DownloadActivity : AppCompatActivity() {
-    private val url = "your download url"
+    private val url = ""
     private val name = "read.apk"
     private var path = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_download)
+        val binding=ActivityDownloadBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         path = getExternalFilesDir("download")?.absolutePath ?: ""
-        btn_pause_download.setOnClickListener {
+        binding.btnPauseDownload.setOnClickListener {
             OkSimple.cancelCall("123")
         }
-        btn_cancel_download.setOnClickListener {
+        binding.btnCancelDownload.setOnClickListener {
             OkSimple.cancelCall("123")
             val file = File(path, name)
             if (file.exists())
                 file.delete()
         }
-        btn_download.setOnClickListener {
+        binding.btnDownload.setOnClickListener {
+            if (!url.startsWith("http")){
+                Toast.makeText(this,"请先在代码里设置下载地址和文件名",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             OkSimple.downloadFile(url, name, path).apply {
                 tag = "123"
             }
@@ -59,7 +64,7 @@ class DownloadActivity : AppCompatActivity() {
                         val percent = current / d
                         val realPercent = (percent * 100).toInt()
                         Log.e("progress", "current:$current\t\ttotal:$total\t$realPercent")
-                        progress.progress = realPercent
+                        binding.progressbar.progress = realPercent
                     }
 
                     override fun start() {

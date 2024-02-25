@@ -1,6 +1,7 @@
 package com.gateoftruth.sample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 import com.gateoftruth.oklibrary.OkSimple
@@ -17,7 +18,12 @@ class PostJsonActivity : AppCompatActivity() {
         tem.put("key1", "value1")
         tem.put("key2", "value2")
         tem.put("key3", "value3")
-        OkSimple.postJson("post json url", tem).execute(object : GsonCallBack<Any>() {
+        val theUrl=""
+        if (!theUrl.startsWith("http")){
+            Toast.makeText(this,"请先在代码里设置url", Toast.LENGTH_LONG).show()
+            return
+        }
+        OkSimple.postJson(theUrl, tem).execute(object : GsonCallBack<Any>() {
             override fun getData(
                 data: Any,
                 rawBodyString: String,

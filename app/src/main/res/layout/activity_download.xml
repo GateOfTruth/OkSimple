@@ -8,7 +8,7 @@
 
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/progressbar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:layout_marginTop="10dp"
         android:text="startDownload"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
 
     <Button
         android:id="@+id/btn_pause_download"

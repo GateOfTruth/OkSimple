@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.gateoftruth.oklibrary.FileResultCallBack
 import com.gateoftruth.oklibrary.OkSimple
-import kotlinx.android.synthetic.main.activity_multiple_download.*
+import com.gateoftruth.sample.databinding.ActivityMultipleDownloadBinding
 import okhttp3.Call
 import java.io.File
 import java.util.*
@@ -18,10 +18,14 @@ class MultipleDownloadActivity : AppCompatActivity() {
     val urlPositionMap = hashMapOf<String, Int>()
     val beanList = mutableListOf<DownloadBean>()
 
+    /**
+     * 存在问题，先不调试
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_multiple_download)
-        recycler_multiple_download.layoutManager = LinearLayoutManager(this)
+        val binding=ActivityMultipleDownloadBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.recyclerMultipleDownload.layoutManager = LinearLayoutManager(this)
         val adapter = DownloadAdapter(this)
         val urlList = listOf("download urls")
         val fileNameList = listOf("aps")
@@ -88,7 +92,7 @@ class MultipleDownloadActivity : AppCompatActivity() {
             }
         }
 
-        btn_delete_all.setOnClickListener {
+        binding.btnDeleteAll.setOnClickListener {
             OkSimple.cancelAll()
             val file = File(path)
             if (file.isDirectory) {
@@ -99,8 +103,8 @@ class MultipleDownloadActivity : AppCompatActivity() {
             }
         }
 
-        recycler_multiple_download.adapter = adapter
-        (recycler_multiple_download.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
+        binding.recyclerMultipleDownload.adapter = adapter
+        (binding.recyclerMultipleDownload.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
             false
     }
 

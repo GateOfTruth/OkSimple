@@ -1,11 +1,12 @@
 package com.gateoftruth.sample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 import com.gateoftruth.oklibrary.OkSimple
-import kotlinx.android.synthetic.main.activity_get.*
+import com.gateoftruth.sample.databinding.ActivityGetBinding
 import okhttp3.Call
 import okhttp3.Response
 
@@ -13,11 +14,17 @@ class GetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_get)
+        val binding=ActivityGetBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val dialog =
             AlertDialog.Builder(this@GetActivity).setTitle("dialog").setMessage("request").create()
         OkSimple.addGlobalHeader("testGlobalHeader", "3")
-        OkSimple.get("your get url").setRequestStrategy(ChangeHostStrategy())
+        val theUrl=""
+        if (!theUrl.startsWith("http")){
+            Toast.makeText(this,"请先在代码里设置url", Toast.LENGTH_LONG).show()
+            return
+        }
+        OkSimple.get(theUrl).setRequestStrategy(ChangeHostStrategy())
             .params("key", "value")
             .params("key", "value")
             .params("key", "value").execute(object :
@@ -33,7 +40,7 @@ class GetActivity : AppCompatActivity() {
                     response: Response
                 ) {
                     dialog.dismiss()
-                    tv_result.text = data.result.component1().title
+                    binding.tvResult.text = data.result.component1().title
                 }
 
                 override fun failure(call: Call, e: Exception) {
@@ -45,8 +52,4 @@ class GetActivity : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        OkSimple.cancelCall("")
-    }
 }

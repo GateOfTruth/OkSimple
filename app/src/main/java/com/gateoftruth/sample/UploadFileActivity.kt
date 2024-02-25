@@ -1,6 +1,7 @@
 package com.gateoftruth.sample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 import com.gateoftruth.oklibrary.OkSimple
@@ -13,7 +14,12 @@ class UploadFileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload_file)
-        OkSimple.uploadFile("", File("")).execute(object : GsonCallBack<String>() {
+        val theUrl=""
+        if (!theUrl.startsWith("http")){
+            Toast.makeText(this,"请先在代码里设置url和文件path", Toast.LENGTH_LONG).show()
+            return
+        }
+        OkSimple.uploadFile(theUrl, File("")).execute(object : GsonCallBack<String>() {
             override fun getData(
                 data: String,
                 rawBodyString: String,

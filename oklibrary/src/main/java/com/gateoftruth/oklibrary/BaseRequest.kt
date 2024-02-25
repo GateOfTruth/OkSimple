@@ -4,7 +4,7 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.internal.headersContentLength
+import okhttp3.internal.toLongOrDefault
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -113,7 +113,7 @@ abstract class BaseRequest(val url: String, val type: String) {
                     val headRequest = requestBuilder.url(requestUrl).head().build()
                     val downloadResponse =
                         client.newCall(headRequest).execute()
-                    contentLength = downloadResponse.headersContentLength()
+                    contentLength = downloadResponse.headers["Content-Length"]?.toLongOrDefault(-1L) ?: -1L
                     acceptRange = downloadResponse.headers["accept-ranges"]
                     requestBuilder = headRequest.newBuilder().get()
                     downloadBean.contentLength = contentLength

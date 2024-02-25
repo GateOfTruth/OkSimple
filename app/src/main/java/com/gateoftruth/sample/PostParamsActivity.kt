@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 import com.gateoftruth.oklibrary.OkSimple
-import kotlinx.android.synthetic.main.activity_post_params.*
+import com.gateoftruth.sample.databinding.ActivityPostParamsBinding
 import okhttp3.Call
 import okhttp3.Response
 
@@ -13,13 +13,19 @@ class PostParamsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_post_params)
-        btn_with_map.setOnClickListener {
+        val binding=ActivityPostParamsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.btnWithMap.setOnClickListener {
+            val theUrl=""
+            if (!theUrl.startsWith("http")){
+                Toast.makeText(this,"请先在代码里设置url", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             val map = hashMapOf<String, String>()
             map["v"] = "1"
             map["month"] = "1"
             map["day"] = "1"
-            OkSimple.post("post url").post(map)
+            OkSimple.post(theUrl).post(map)
                 .params("key", "value")
                 .execute(object : GsonCallBack<ExampleBean>() {
                     override fun getData(
@@ -43,8 +49,13 @@ class PostParamsActivity : AppCompatActivity() {
                 })
         }
 
-        btn_without_map.setOnClickListener {
-            OkSimple.post("your url")
+        binding.btnWithoutMap.setOnClickListener {
+            val theUrl=""
+            if (!theUrl.startsWith("http")){
+                Toast.makeText(this,"请先在代码里设置url", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            OkSimple.post(theUrl)
                 .post("v", "1")
                 .post("month", "1")
                 .post("day", "1")

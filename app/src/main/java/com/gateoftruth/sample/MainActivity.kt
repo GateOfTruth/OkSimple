@@ -2,58 +2,62 @@ package com.gateoftruth.sample
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.gateoftruth.sample.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        btn_download.setOnClickListener {
+        val binding=ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.btnDownload.setOnClickListener {
             startActivity(Intent(this, DownloadActivity::class.java))
         }
-        btn_get.setOnClickListener {
+        binding.btnGet.setOnClickListener {
             startActivity(Intent(this, GetActivity::class.java))
         }
 
-        btn_post_params.setOnClickListener {
+        binding.btnPostParams.setOnClickListener {
             startActivity(Intent(this, PostParamsActivity::class.java))
         }
 
-        btn_post_json.setOnClickListener {
+        binding.btnPostJson.setOnClickListener {
             startActivity(Intent(this, PostJsonActivity::class.java))
         }
 
-        btn_bitmap.setOnClickListener {
+        binding.btnBitmap.setOnClickListener {
             startActivity(Intent(this, BitmapActivity::class.java))
         }
 
-        btn_upload.setOnClickListener {
+        binding.btnUpload.setOnClickListener {
             startActivity(Intent(this, UploadFileActivity::class.java))
         }
 
-        btn_post_form.setOnClickListener {
+        binding.btnPostForm.setOnClickListener {
             startActivity(Intent(this, PostFormActivity::class.java))
         }
 
-        btn_glide_test.setOnClickListener {
+        binding.btnGlideTest.setOnClickListener {
             startActivity(Intent(this, GlideTestActivity::class.java))
         }
 
-        btn_brotli_test.setOnClickListener {
+        binding.btnBrotliTest.setOnClickListener {
             startActivity(Intent(this, BrotliActivity::class.java))
         }
 
-        btn_multiple_download.setOnClickListener {
-            startActivity(Intent(this, MultipleDownloadActivity::class.java))
+        binding.btnMultipleDownload.setOnClickListener {
+            Toast.makeText(this,"多文件同时下载请视具体逻辑更改，代码仅供参考", Toast.LENGTH_LONG).show()
+            return@setOnClickListener
+            //startActivity(Intent(this, MultipleDownloadActivity::class.java))
         }
 
-        btn_synchronize_request.setOnClickListener {
+        binding.btnSynchronizeRequest.setOnClickListener {
             startActivity(Intent(this, SynchronizeRequestActivity::class.java))
         }
 
-        btn_method_request.setOnClickListener {
+        binding.btnMethodRequest.setOnClickListener {
             startActivity(Intent(this, MethodActivity::class.java))
         }
 

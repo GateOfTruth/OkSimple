@@ -2,6 +2,7 @@ package com.gateoftruth.sample
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 import com.gateoftruth.oklibrary.OkSimple
@@ -27,8 +28,12 @@ class PostFormActivity : AppCompatActivity() {
                 input.copyTo(out)
             }
         }
-
-        OkSimple.postForm("post url").addFormPart("image", file, "image/*")
+        val theUrl=""
+        if (!theUrl.startsWith("http")){
+            Toast.makeText(this,"请先在代码里设置url和文件", Toast.LENGTH_LONG).show()
+            return
+        }
+        OkSimple.postForm(theUrl).addFormPart("image", file, "image/*")
             .addFormPart("route", "uploadFile").execute(object :
                 GsonCallBack<Any>() {
                 override fun getData(
