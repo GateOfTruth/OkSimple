@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -42,7 +42,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -64,8 +64,9 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
     implementation ("com.squareup.okhttp3:okhttp-brotli:5.0.0-alpha.12")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
-    implementation ("com.github.bumptech.glide:annotations:4.16.0")
+    //implementation ("com.github.bumptech.glide:annotations:4.16.0")
     implementation ("com.github.bumptech.glide:okhttp3-integration:4.16.0")
+    ksp("com.github.bumptech.glide:ksp:4.16.0")
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation(project(":oklibrary"))
     implementation("androidx.appcompat:appcompat:1.6.1")
