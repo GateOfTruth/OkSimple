@@ -4,6 +4,7 @@ plugins {
     id("maven-publish")
 }
 
+
 android {
     namespace = "com.gateoftruth.oklibrary"
     compileSdk = 34
