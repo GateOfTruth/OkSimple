@@ -26,7 +26,7 @@ Oksimple目前minsdkversion是21，一些用我这个lib朋友希望我能支持
 github上的demo演示里，用的都是第三方的地址。但功能的话，都是经过实际使用测试的。如果确实有问题的话，欢迎提issue。
 
 
-### 接入方法 以最新版的Android studio为例，你需要在settings.gradle中进行配置，主要是引入jitpack
+### 接入方法 以最新版的Android studio为例，你需要在settings.gradle.kts中进行配置，主要是引入jitpack
 ```
 pluginManagement {
     repositories {
