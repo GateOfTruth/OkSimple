@@ -1,21 +1,21 @@
 [versions]
-agp = "8.9.2"
+agp = "8.12.0"
 appcompat = "1.7.0"
 glide = "4.16.0"
-gson = "2.11.0"
-kotlin = "2.0.0"
-ksp = "2.0.0-1.0.23"
+gson = "2.13.1"
+kotlin = "2.2.10"
+ksp = "2.2.10-2.0.2"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.6.2"
-activityCompose = "1.8.0"
-composeBom = "2024.04.01"
+lifecycleRuntimeKtx = "2.8.3"
+activityCompose = "1.8.2"
+composeBom = "2024.09.00"
 materialVersion = "1.12.0"
-coroutinesVersion = "1.10.0"
-okhttpVersion = "5.0.0-alpha.14"
-activity = "1.8.0"
+coroutinesVersion = "1.10.2"
+okhttpVersion = "5.1.0"
+activity = "1.8.2"
 constraintlayout = "2.1.4"
 
 [libraries]
@@ -35,13 +35,12 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version = "1.6.6" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest"}
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 okhttp-brotli = { module = "com.squareup.okhttp3:okhttp-brotli", version.ref = "okhttpVersion" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttpVersion" }
 okhttp-module = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttpVersion" }
-okhttp-coroutines = { module = "com.squareup.okhttp3:okhttp-coroutines", version.ref = "okhttpVersion" }
 okhttp3-integration = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "glide" }
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutinesVersion" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
