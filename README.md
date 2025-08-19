@@ -17,7 +17,7 @@
 
 
 ### 项目介绍
-强大好用的网络请求框架。基于okhttp5.X和kotlin，目前少有的更新到okttp5.X的网络请求框架。当前版本是okttp5.0.0-alpha.14。采用链式回调，不用再写一堆接口和类，轻量级，扩展性强，欢迎star，也欢迎提issue，pr或者其他建议。
+强大好用的网络请求框架。基于okhttp5.X和kotlin，目前少有的更新到okttp5.X的网络请求框架。当前版本是okttp5.1.0。采用链式回调，不用再写一堆接口和类，轻量级，扩展性强，欢迎star，也欢迎提issue，pr或者其他建议。
 
 ### minSdkVersion
 Oksimple目前minsdkversion是21，一些用我这个lib朋友希望我能支持到19，我的想法是oksimple没有支持19的打算。首先okhttp 3.13以后的版本，对minsdkversion的版本要求都变成21了。原因的话，官方有给出解释，大意是说出于https安全方面的考虑，具体可以参考[这篇文章](https://medium.com/square-corner-blog/okhttp-3-13-requires-android-5-818bb78d07ce)。如果你还想兼容android 5.0以下的版本，可以使用okhttp的3.12.x版本。但oksimple目前是基于5.X开发，没有针对 okhttp 3.12版本重写的打算。这里说一点题外话，其实像微信的最新版，minsdkversion都变成21了。支持到19，中间的20是kitkat wear，是针对智能手表一类的设备的。如果你做的是针对手机的app，那kitkat wear其实和你没什么关系。所以21到19，看似多支持了2个版本，其实只是多支持了一个版本。为了19这个已经落后很多年的版本，有些时候你需要多写很多代码和适配，我个人感觉是没有必要的。
@@ -51,7 +51,7 @@ dependencyResolutionManagement {
 ```
 然后在app的build.gradle
 ```
-implementation("com.github.GateOfTruth:OkSimple:3.4.3")
+implementation("com.github.GateOfTruth:OkSimple:3.4.6")
 ```
 ##### 或者你也可以fork一下，自己编译，oksimple只依赖了okhttp，没有其他依赖，编译出来的aar包也只有30几KB，同时，Oksimple采用api引入okhttp，所以你引入了oksimple的话，就不用重新引入okhttp了。
 
