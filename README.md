@@ -51,7 +51,7 @@ dependencyResolutionManagement {
 ```
 然后在app的build.gradle
 ```
-implementation("com.github.GateOfTruth:OkSimple:3.4.6")
+implementation("com.github.GateOfTruth:OkSimple:3.4.7")
 ```
 
 
