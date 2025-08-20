@@ -16,6 +16,11 @@
 - 同步okhttp最新版本，支持brotli compression
 
 
+### 功能演示
+图片下载进度监听<br>
+![图片下载进度监听](https://github.com/GateOfTruth/OkSimple/blob/master/glide.gif)<br>
+多文件下载进度监听<br>
+![多文件下载进度监听](https://github.com/GateOfTruth/OkSimple/blob/master/multiple_download.gif)<br>
 ### 项目介绍
 强大好用的网络请求框架。基于okhttp5.X和kotlin，目前少有的更新到okttp5.X的网络请求框架。当前版本是okttp5.1.0。采用链式回调，不用再写一堆接口和类，轻量级，扩展性强，欢迎star，也欢迎提issue，pr或者其他建议。
 
