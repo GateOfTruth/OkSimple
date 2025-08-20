@@ -53,17 +53,12 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
+
     api (libs.okhttp.module)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+
     
 }
 
@@ -73,7 +68,7 @@ publishing { // 发布配置
         register<MavenPublication>("release") { // 注册一个名字为 release 的发布内容
             groupId = "com.gateoftruth.library"
             artifactId = "OkSimple"
-            version = "3.4.6"
+            version = "3.4.7"
 
             afterEvaluate { // 在所有的配置都完成之后执行
                 // 从当前 module 的 release 包中发布
