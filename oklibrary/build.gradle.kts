@@ -7,13 +7,10 @@ plugins {
 
 android {
     namespace = "com.gateoftruth.oklibrary"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 21
-        lint.targetSdk = 36
-
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
