@@ -30,11 +30,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
-        }
-    }
+
     buildFeatures {
         compose = false
     }
@@ -65,7 +61,7 @@ publishing { // 发布配置
         register<MavenPublication>("release") { // 注册一个名字为 release 的发布内容
             groupId = "com.gateoftruth.library"
             artifactId = "OkSimple"
-            version = "3.5.3"
+            version = "3.5.4"
 
             afterEvaluate { // 在所有的配置都完成之后执行
                 // 从当前 module 的 release 包中发布
