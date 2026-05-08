@@ -34,6 +34,10 @@ android {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
         }
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
+            // vendor = JvmVendorSpec.JETBRAINS // 删除或注释这一行
+        }
     }
     buildFeatures {
         compose = false
@@ -65,7 +69,7 @@ publishing { // 发布配置
         register<MavenPublication>("release") { // 注册一个名字为 release 的发布内容
             groupId = "com.gateoftruth.library"
             artifactId = "OkSimple"
-            version = "3.5.1"
+            version = "3.5.2"
 
             afterEvaluate { // 在所有的配置都完成之后执行
                 // 从当前 module 的 release 包中发布
