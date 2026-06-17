@@ -1,7 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.library)
     id("maven-publish")
+    alias(libs.plugins.kotlin.android)
 }
 
 
@@ -40,12 +40,15 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    publishing {
+        singleVariant("release")
+    }
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+
 
     api (libs.okhttp.module)
 
@@ -61,7 +64,7 @@ publishing { // 发布配置
         register<MavenPublication>("release") { // 注册一个名字为 release 的发布内容
             groupId = "com.gateoftruth.library"
             artifactId = "OkSimple"
-            version = "3.5.4"
+            version = "3.5.5"
 
             afterEvaluate { // 在所有的配置都完成之后执行
                 // 从当前 module 的 release 包中发布
