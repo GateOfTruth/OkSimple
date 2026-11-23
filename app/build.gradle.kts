@@ -1,8 +1,12 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.android)
 }
+
+
 
 android {
     namespace = "com.gateoftruth.sample"
@@ -40,6 +44,11 @@ android {
     }
 
 }
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_21   // 与 compileOptions 的 VERSION_21 保持一致
+    }
+}
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -64,5 +73,4 @@ dependencies {
     ksp(libs.glide.ksp)
     implementation (libs.gson)
     implementation(project(":oklibrary"))
-
 }

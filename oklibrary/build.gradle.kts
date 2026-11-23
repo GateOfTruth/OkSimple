@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.library)
     id("maven-publish")
@@ -46,6 +48,12 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_21   // 与 compileOptions 的 VERSION_21 保持一致
+    }
+}
+
 dependencies {
 
 
@@ -64,7 +72,7 @@ publishing { // 发布配置
         register<MavenPublication>("release") { // 注册一个名字为 release 的发布内容
             groupId = "com.gateoftruth.library"
             artifactId = "OkSimple"
-            version = "3.5.6"
+            version = "3.5.7"
 
             afterEvaluate { // 在所有的配置都完成之后执行
                 // 从当前 module 的 release 包中发布
